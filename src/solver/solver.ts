@@ -183,13 +183,18 @@ function isViolated(c: Constraint, s: Int8Array): boolean {
   return false;
 }
 
-function firstViolated(constraints: readonly Constraint[], s: Int8Array): number {
+/** Index of the first constraint that cannot be satisfied under `s`, or -1. */
+export function firstViolated(constraints: readonly Constraint[], s: Int8Array): number {
   for (let ci = 0; ci < constraints.length; ci++) if (isViolated(constraints[ci]!, s)) return ci;
   return -1;
 }
 
-/** Propagate tiers 0..2 forcing to fixpoint (no trace). Used inside hypotheticals. */
-function propagate(constraints: readonly Constraint[], s: Int8Array): void {
+/**
+ * Propagate tiers 0..2 forcing to fixpoint (no trace). Sound unit propagation
+ * over the constraint types — used inside hypotheticals and by the model
+ * counter (gen/dpll).
+ */
+export function propagate(constraints: readonly Constraint[], s: Int8Array): void {
   for (;;) {
     let progressed = false;
     for (let tier = 0; tier <= 2; tier++) {
