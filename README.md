@@ -9,8 +9,13 @@ frozen contract) → generator → interaction → product → adaptation → te
 
 ## Status
 
-**Phase 1 — logic core (CLI only, no pixels).** Building `core/`, `solver/`,
-`gen/` (minus layout) and the CLI. Gate: 1,000-puzzle batch, 100% deducibility.
+**Phase 1 — logic core (CLI only, no pixels): built, six of seven gate criteria
+pass.** `core/`, `solver/`, `gen/` (minus layout), the CLI, and the append-only
+test vectors are complete. The 1,000-puzzle batch gate is green (100%
+uniqueness + deducibility, 0 R5, ≥5% acceptance per band, wire byte-identical,
+p95 ≤1ms). See [`docs/PHASE1-BATCH.md`](docs/PHASE1-BATCH.md). The one open gate
+item is the owner's 30-puzzle blind-solve human-anchoring (Spearman ≥0.7,
+SPEC-GENERATOR §4.2) — it needs a human solving by hand.
 
 ## Layout
 
