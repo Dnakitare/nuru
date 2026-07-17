@@ -238,7 +238,7 @@ export function generateOne(seed: number, req: GenRequest): GenAttempt {
     }
   }
 
-  const difficulty: DifficultyVector = grade(result, constraints as { threads: readonly number[] }[], n);
+  const difficulty: DifficultyVector = grade(result, constraints, n);
 
   // T4 must genuinely require a hypothetical; otherwise it is a mislabeled T≤3.
   if (req.targetTier === 4 && difficulty.hypoCount < 1) return { ok: false, reason: "too_easy_t4", seed };

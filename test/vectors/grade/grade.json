@@ -1,0 +1,386 @@
+[
+  {
+    "name": "gen-t1-1",
+    "difficulty": {
+      "maxTier": 1,
+      "steps": 5,
+      "maxChain": 4,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 5,
+      "scalar": 2.95
+    }
+  },
+  {
+    "name": "gen-t1-2",
+    "difficulty": {
+      "maxTier": 1,
+      "steps": 5,
+      "maxChain": 3,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 5,
+      "scalar": 2.65
+    }
+  },
+  {
+    "name": "gen-t1-3",
+    "difficulty": {
+      "maxTier": 1,
+      "steps": 4,
+      "maxChain": 3,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 4,
+      "scalar": 2.6
+    }
+  },
+  {
+    "name": "gen-t1-4",
+    "difficulty": {
+      "maxTier": 1,
+      "steps": 4,
+      "maxChain": 4,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 4,
+      "scalar": 2.9
+    }
+  },
+  {
+    "name": "gen-t1-5",
+    "difficulty": {
+      "maxTier": 1,
+      "steps": 4,
+      "maxChain": 3,
+      "minWidth": 2,
+      "hypoCount": 0,
+      "threadCount": 4,
+      "scalar": 2.35
+    }
+  },
+  {
+    "name": "gen-t1-6",
+    "difficulty": {
+      "maxTier": 1,
+      "steps": 4,
+      "maxChain": 3,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 4,
+      "scalar": 2.6
+    }
+  },
+  {
+    "name": "gen-t1-7",
+    "difficulty": {
+      "maxTier": 1,
+      "steps": 4,
+      "maxChain": 3,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 4,
+      "scalar": 2.6
+    }
+  },
+  {
+    "name": "gen-t1-8",
+    "difficulty": {
+      "maxTier": 1,
+      "steps": 4,
+      "maxChain": 3,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 4,
+      "scalar": 2.6
+    }
+  },
+  {
+    "name": "gen-t2-1",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 10,
+      "maxChain": 6,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 10,
+      "scalar": 5.3
+    }
+  },
+  {
+    "name": "gen-t2-2",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 11,
+      "maxChain": 8,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 11,
+      "scalar": 5.95
+    }
+  },
+  {
+    "name": "gen-t2-3",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 7,
+      "maxChain": 5,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 7,
+      "scalar": 4.85
+    }
+  },
+  {
+    "name": "gen-t2-4",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 8,
+      "maxChain": 7,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 8,
+      "scalar": 5.5
+    }
+  },
+  {
+    "name": "gen-t2-5",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 7,
+      "maxChain": 6,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 7,
+      "scalar": 5.15
+    }
+  },
+  {
+    "name": "gen-t2-6",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 7,
+      "maxChain": 5,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 7,
+      "scalar": 4.85
+    }
+  },
+  {
+    "name": "gen-t2-7",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 7,
+      "maxChain": 5,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 7,
+      "scalar": 4.85
+    }
+  },
+  {
+    "name": "gen-t2-8",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 8,
+      "maxChain": 6,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 8,
+      "scalar": 5.2
+    }
+  },
+  {
+    "name": "gen-t3-1",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 12,
+      "maxChain": 9,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 12,
+      "scalar": 6.3
+    }
+  },
+  {
+    "name": "gen-t3-2",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 10,
+      "maxChain": 9,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 10,
+      "scalar": 6.2
+    }
+  },
+  {
+    "name": "gen-t3-3",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 14,
+      "maxChain": 8,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 14,
+      "scalar": 6.1
+    }
+  },
+  {
+    "name": "gen-t3-4",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 14,
+      "maxChain": 10,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 14,
+      "scalar": 6.7
+    }
+  },
+  {
+    "name": "gen-t3-5",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 15,
+      "maxChain": 10,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 15,
+      "scalar": 6.75
+    }
+  },
+  {
+    "name": "gen-t3-6",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 16,
+      "maxChain": 11,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 16,
+      "scalar": 7.1
+    }
+  },
+  {
+    "name": "gen-t3-7",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 15,
+      "maxChain": 9,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 15,
+      "scalar": 6.45
+    }
+  },
+  {
+    "name": "gen-t3-8",
+    "difficulty": {
+      "maxTier": 2,
+      "steps": 15,
+      "maxChain": 11,
+      "minWidth": 1,
+      "hypoCount": 0,
+      "threadCount": 15,
+      "scalar": 7.05
+    }
+  },
+  {
+    "name": "gen-t4-1",
+    "difficulty": {
+      "maxTier": 4,
+      "steps": 10,
+      "maxChain": 8,
+      "minWidth": 1,
+      "hypoCount": 1,
+      "threadCount": 10,
+      "scalar": 10.4
+    }
+  },
+  {
+    "name": "gen-t4-2",
+    "difficulty": {
+      "maxTier": 4,
+      "steps": 7,
+      "maxChain": 6,
+      "minWidth": 1,
+      "hypoCount": 2,
+      "threadCount": 7,
+      "scalar": 11.15
+    }
+  },
+  {
+    "name": "gen-t4-3",
+    "difficulty": {
+      "maxTier": 4,
+      "steps": 11,
+      "maxChain": 8,
+      "minWidth": 1,
+      "hypoCount": 2,
+      "threadCount": 11,
+      "scalar": 11.95
+    }
+  },
+  {
+    "name": "gen-t4-4",
+    "difficulty": {
+      "maxTier": 4,
+      "steps": 10,
+      "maxChain": 8,
+      "minWidth": 1,
+      "hypoCount": 1,
+      "threadCount": 10,
+      "scalar": 10.4
+    }
+  },
+  {
+    "name": "gen-t4-5",
+    "difficulty": {
+      "maxTier": 4,
+      "steps": 8,
+      "maxChain": 7,
+      "minWidth": 1,
+      "hypoCount": 1,
+      "threadCount": 8,
+      "scalar": 10
+    }
+  },
+  {
+    "name": "gen-t4-6",
+    "difficulty": {
+      "maxTier": 4,
+      "steps": 10,
+      "maxChain": 9,
+      "minWidth": 1,
+      "hypoCount": 3,
+      "threadCount": 10,
+      "scalar": 13.7
+    }
+  },
+  {
+    "name": "gen-t4-7",
+    "difficulty": {
+      "maxTier": 4,
+      "steps": 12,
+      "maxChain": 9,
+      "minWidth": 1,
+      "hypoCount": 1,
+      "threadCount": 12,
+      "scalar": 10.8
+    }
+  },
+  {
+    "name": "gen-t4-8",
+    "difficulty": {
+      "maxTier": 4,
+      "steps": 8,
+      "maxChain": 6,
+      "minWidth": 1,
+      "hypoCount": 2,
+      "threadCount": 8,
+      "scalar": 11.2
+    }
+  }
+]

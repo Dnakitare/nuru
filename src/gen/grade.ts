@@ -32,7 +32,7 @@ export function tierBandOf(scalar: number): 1 | 2 | 3 | 4 {
  * roots. R4 (hypothetical) steps sit atop all prior reasoning, so their depth
  * is one past the deepest step so far.
  */
-function longestChain(trace: readonly Step[], constraints: { threads: readonly number[] }[]): number {
+function longestChain(trace: readonly Step[], constraints: readonly { threads: readonly number[] }[]): number {
   const depth = new Array<number>(trace.length).fill(0);
   const concludedBy = new Map<number, number>(); // thread → step index
   let maxSoFar = 0;
@@ -62,7 +62,7 @@ function longestChain(trace: readonly Step[], constraints: { threads: readonly n
 
 export function grade(
   result: SolveResult,
-  constraints: { threads: readonly number[] }[],
+  constraints: readonly { threads: readonly number[] }[],
   threadCount: number,
 ): DifficultyVector {
   const trace = result.trace;
