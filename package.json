@@ -1,0 +1,26 @@
+{
+  "name": "fmb",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Fumbo (provisional) — tactile deduction game. Phase 1: logic core.",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "fumbo": "cli/index.ts"
+  },
+  "scripts": {
+    "fumbo": "tsx cli/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "batch": "tsx cli/index.ts batch --n 1000 --ladder"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "tsx": "^4.23.1",
+    "typescript": "^5.6.0",
+    "vitest": "^4.1.10"
+  }
+}
