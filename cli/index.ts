@@ -16,8 +16,9 @@ import { RULE_NAME, solve, type SolveResult } from "../src/solver/index.js";
 import { generate, grade, isUnique, LADDER, runBatch, type GenRequest, type TargetTier } from "../src/gen/index.js";
 import { has, num, parse, range, str, type Args } from "./args.js";
 import { emitVectors } from "./vectors.js";
+import { benchReport, runBench } from "./bench.js";
 
-function main(): void {
+async function main(): Promise<void> {
   const [cmd, ...rest] = process.argv.slice(2);
   const args = parse(rest);
   try {
@@ -27,6 +28,7 @@ function main(): void {
       case "verify": return cmdVerify(args);
       case "trace": return cmdTrace(args);
       case "batch": return cmdBatch(args);
+      case "bench": return await cmdBench(args);
       case "vectors": return cmdVectors(args);
       case "help": case undefined: return help();
       default:
@@ -48,6 +50,8 @@ function help(): void {
   verify  <fmb1_...>            uniqueness + deducibility + certificate + wire round-trip
   trace   <fmb1_...> [--full]   human-readable canonical solve trace
   batch   --n N [--seed N]      generate N across the ladder, verify all, write the gate report
+  bench   --n N [--seed N]      timed blind solve — records solve times, reports Spearman (§4.2)
+  bench   --report              print the human-anchoring report from past runs
   vectors --emit                (re)generate append-only test vectors
 
 Tiers: 1 tutorial · 2 daily · 3 tangle mainstream · 4 tangle frontier`);
@@ -213,4 +217,12 @@ function cmdVectors(args: Args): void {
   emitVectors();
 }
 
-main();
+async function cmdBench(args: Args): Promise<void> {
+  const logPath = str(args, "log", join(process.cwd(), "bench", "solve-log.json"));
+  if (has(args, "report")) return benchReport(logPath);
+  const n = num(args, "n", 30);
+  const seed = num(args, "seed", 0x5eed);
+  await runBench(n, seed, logPath);
+}
+
+void main();
