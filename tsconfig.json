@@ -15,5 +15,6 @@
     "noEmit": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "cli", "test"]
+  "include": ["src", "cli", "test"],
+  "exclude": ["src/web"]
 }
