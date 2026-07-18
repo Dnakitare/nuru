@@ -16,6 +16,7 @@ import {
   decodePuzzle,
   encodePuzzle,
   encodeResult,
+  puzzleDigestHex,
   PuzzleRef,
   WIRE_PREFIX,
   type Constraint,
@@ -53,6 +54,12 @@ interface GradeVector {
   difficulty: unknown;
 }
 
+interface DigestVector {
+  name: string;
+  threadCount: number;
+  digest: string; // canonical SHA-256 hex (SPEC-CORE §6) — the sigil seed
+}
+
 function decodedPuzzleJson(p: WirePuzzle): unknown {
   return {
     threadCount: p.threadCount,
@@ -74,10 +81,11 @@ function buildWirePuzzle(threadCount: number, constraints: Constraint[], layoutS
   return { threadCount, layoutSeed, constraints, solution };
 }
 
-function generateVectors(): { wire: WireVector[]; solve: SolveVector[]; grade: GradeVector[] } {
+function generateVectors(): { wire: WireVector[]; solve: SolveVector[]; grade: GradeVector[]; digest: DigestVector[] } {
   const wire: WireVector[] = [];
   const solveV: SolveVector[] = [];
   const gradeV: GradeVector[] = [];
+  const digestV: DigestVector[] = [];
 
   // 1. One minimal puzzle per binary constraint type (shared + local forms).
   const binary: [string, CType][] = [
@@ -154,10 +162,25 @@ function generateVectors(): { wire: WireVector[]; solve: SolveVector[]; grade: G
       const sr = solve(wp.threadCount, wp.constraints, { tierCeiling: 4 });
       solveV.push({ name, payload: shared, threadCount: wp.threadCount, certificate: sr.certificate, trace: sr.trace.map((s) => ({ ...s })) });
       gradeV.push({ name, difficulty: grade(sr, wp.constraints, wp.threadCount) });
+      // canonical digest (§6) — the sigil seed and a cross-implementation surface
+      digestV.push({ name, threadCount: wp.threadCount, digest: puzzleDigestHex(wp.threadCount, wp.constraints) });
     }
   }
 
-  return { wire, solve: solveV, grade: gradeV };
+  // 6. Order-invariance digest vectors: the digest must be independent of
+  // constraint authoring order even for orientation-tied constraints (§6).
+  {
+    const cs: Constraint[] = [
+      { type: CType.ANCHOR, threads: [0], k: 1 },
+      { type: CType.ANCHOR, threads: [1], k: 0 },
+      { type: CType.IMPL, threads: [0, 1] },
+      { type: CType.IMPL, threads: [1, 0] },
+    ];
+    digestV.push({ name: "digest-orient-a", threadCount: 2, digest: puzzleDigestHex(2, cs) });
+    digestV.push({ name: "digest-orient-b", threadCount: 2, digest: puzzleDigestHex(2, [cs[0]!, cs[1]!, cs[3]!, cs[2]!]) });
+  }
+
+  return { wire, solve: solveV, grade: gradeV, digest: digestV };
 }
 
 function writeWithGuard<T extends { name: string }>(path: string, next: T[]): { added: number; kept: number } {
@@ -186,10 +209,12 @@ function writeWithGuard<T extends { name: string }>(path: string, next: T[]): { 
 }
 
 export function emitVectors(): void {
-  const { wire, solve: solveV, grade: gradeV } = generateVectors();
+  const { wire, solve: solveV, grade: gradeV, digest: digestV } = generateVectors();
   const w = writeWithGuard(join(VECTORS_DIR, "wire", "wire.json"), wire);
   const s = writeWithGuard(join(VECTORS_DIR, "solve", "solve.json"), solveV);
   const g = writeWithGuard(join(VECTORS_DIR, "grade", "grade.json"), gradeV);
+  const d = writeWithGuard(join(VECTORS_DIR, "digest", "digest.json"), digestV);
+  console.log(`digest: ${digestV.length} vectors (${d.added} new, ${d.kept} preserved)`);
   console.log(`wire:  ${wire.length} vectors (${w.added} new, ${w.kept} preserved)`);
   console.log(`solve: ${solveV.length} vectors (${s.added} new, ${s.kept} preserved)`);
   console.log(`grade: ${gradeV.length} vectors (${g.added} new, ${g.kept} preserved)`);

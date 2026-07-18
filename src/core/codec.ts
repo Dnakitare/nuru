@@ -62,12 +62,20 @@ export function base64urlDecode(s: string): Uint8Array {
   }
   const rem = len - i;
   if (rem === 2) {
-    const n = (dec(s, i) << 18) | (dec(s, i + 1) << 12);
-    out[o++] = (n >>> 16) & 0xff;
+    const c0 = dec(s, i);
+    const c1 = dec(s, i + 1);
+    // The low 4 bits of the final char are discarded; reject if they are set so
+    // a payload has exactly one canonical encoding (strict RFC-4648, matters for
+    // cross-implementation agreement and URL-equality dedup).
+    if (c1 & 0x0f) throw new Error("non-canonical base64url tail");
+    out[o++] = ((c0 << 2) | (c1 >> 4)) & 0xff;
   } else if (rem === 3) {
-    const n = (dec(s, i) << 18) | (dec(s, i + 1) << 12) | (dec(s, i + 2) << 6);
-    out[o++] = (n >>> 16) & 0xff;
-    out[o++] = (n >>> 8) & 0xff;
+    const c0 = dec(s, i);
+    const c1 = dec(s, i + 1);
+    const c2 = dec(s, i + 2);
+    if (c2 & 0x03) throw new Error("non-canonical base64url tail");
+    out[o++] = ((c0 << 2) | (c1 >> 4)) & 0xff;
+    out[o++] = (((c1 & 0x0f) << 4) | (c2 >> 2)) & 0xff;
   }
   return out;
 }

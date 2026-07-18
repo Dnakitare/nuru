@@ -20,13 +20,22 @@ SPEC-GENERATOR §4.2) — it needs a human solving by hand.
 ## Layout
 
 ```
-src/core/     graph model, constraint registry, fmb1_ wire format, canonical hash
+src/core/     graph model, constraint registry, fmb1_ wire format, canonical
+              hash, §1.3 well-formedness validator
 src/solver/   deduction-only solver (R0–R4.1), canonical trace, certificate
 src/gen/      generator pipeline, DPLL uniqueness, grading  (layout: Phase 2)
-src/sim/ render/ input/ game/ adapt/   Phase 2+ (empty in Phase 1)
-cli/          fumbo gen | grade | verify | batch | trace | vectors
+src/web/      browser "knot inspector" — a Phase 1 review harness that runs the
+              pure engine in the browser (NOT the Phase 2 tactile prototype;
+              the engine stays DOM-free, web imports it and never the reverse)
+src/sim/ render/ input/ game/ adapt/   Phase 2+ (not created yet)
+cli/          fumbo gen | grade | verify | trace | batch | bench | vectors
 test/vectors/ canonical, append-only cross-implementation vectors
+              (wire | solve | grade | digest)
 ```
+
+The `src/web/` inspector is extra to the "CLI-only, no pixels" Phase 1 charter —
+built to see and test the engine. It is boundary-safe (engine has zero DOM
+imports) and clearly labeled as a harness, not the tactile game.
 
 `core/` and `solver/` have zero imports from anywhere else; dependency
 direction is strictly downward through the list above.

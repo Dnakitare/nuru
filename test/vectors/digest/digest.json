@@ -1,0 +1,172 @@
+[
+  {
+    "name": "gen-t1-1",
+    "threadCount": 5,
+    "digest": "5889bb0a0dcedda3ce2783b371610c8ecadcb0e1945e926185db3498e7c19a29"
+  },
+  {
+    "name": "gen-t1-2",
+    "threadCount": 5,
+    "digest": "07cea70a57e15b491e4484a8be76739a5a1988cde346bf66fe8651ad7c23e9de"
+  },
+  {
+    "name": "gen-t1-3",
+    "threadCount": 4,
+    "digest": "5a1bcd06c4d14f74157e5a7402c94f1b5aac81566aa9f58b5e3967fedd1286cf"
+  },
+  {
+    "name": "gen-t1-4",
+    "threadCount": 4,
+    "digest": "86c4d166e0697514ad377cfe07237d9f278bfefc49d71875e7b5a70868a51da7"
+  },
+  {
+    "name": "gen-t1-5",
+    "threadCount": 4,
+    "digest": "4c111de49e753e68cc7daf672075a3cc5ff0735744b9d71149611c040c5413ef"
+  },
+  {
+    "name": "gen-t1-6",
+    "threadCount": 4,
+    "digest": "e5df5531967ed4c9696f59647c6af8a85b44412f2cd338cb8061c90f3c548462"
+  },
+  {
+    "name": "gen-t1-7",
+    "threadCount": 4,
+    "digest": "2c0c341acfaedae06879f89c5248539efd9670c8226d903f95fa69aa44a2636b"
+  },
+  {
+    "name": "gen-t1-8",
+    "threadCount": 4,
+    "digest": "69d3f973dd9a8884abfdf01295799abe35962940e24ea5d18854d2534f7b2205"
+  },
+  {
+    "name": "gen-t2-1",
+    "threadCount": 10,
+    "digest": "967a917ce97c503f8b5351babb0ec962687c911bdbc389dba5ea6ec872197858"
+  },
+  {
+    "name": "gen-t2-2",
+    "threadCount": 11,
+    "digest": "b8919c2afa8e61b1e8e386564032ab2e5ea567f3600eebd9fd84b252b8a9d584"
+  },
+  {
+    "name": "gen-t2-3",
+    "threadCount": 7,
+    "digest": "f4fedf00e51e4a6d2e46f1187ca7ddab1c65bbe3615fd746b173b553a655582b"
+  },
+  {
+    "name": "gen-t2-4",
+    "threadCount": 8,
+    "digest": "31078fbaf4ed5cf5a26283fd50649824c556b9464f5d526bc5e22318f0ddf0dd"
+  },
+  {
+    "name": "gen-t2-5",
+    "threadCount": 7,
+    "digest": "f028365ccf8a59b75b28a68a10a7993f401b4a776fba0eebf4f148083ca7a713"
+  },
+  {
+    "name": "gen-t2-6",
+    "threadCount": 7,
+    "digest": "6fe5b7a86c205560670d3ba695dad2ce1dd3b75ca6d95a546252c7a58a047c3e"
+  },
+  {
+    "name": "gen-t2-7",
+    "threadCount": 7,
+    "digest": "8595a59fe0742642379be5efb146b421b080dd19088134f9d6bc3d414e895547"
+  },
+  {
+    "name": "gen-t2-8",
+    "threadCount": 8,
+    "digest": "7ac256241c45d3f877c722864f3fe6dffb8dd6cef1e437e667581b8c0048f01a"
+  },
+  {
+    "name": "gen-t3-1",
+    "threadCount": 12,
+    "digest": "3377f54bbc667aeb85dee39e49d004b0c8542b13679ba5c2e19f50ef5ceeb305"
+  },
+  {
+    "name": "gen-t3-2",
+    "threadCount": 10,
+    "digest": "114fae62acf5c16e926fcc44903787dcb2f8e9aee0f7a88a013dee9207375427"
+  },
+  {
+    "name": "gen-t3-3",
+    "threadCount": 14,
+    "digest": "5a146dddeba1f9d4042a8a1332eb804bc667c2208801b9d0a58a555c27ac7d63"
+  },
+  {
+    "name": "gen-t3-4",
+    "threadCount": 14,
+    "digest": "5702482c41266548fd947786c5daf0e1b0fed9e1116bab9253a2e35cc73e7e25"
+  },
+  {
+    "name": "gen-t3-5",
+    "threadCount": 15,
+    "digest": "206a997ae00f3ac8f1f0a693fa09ca2faf5e0db2c60f2b0aa5fd43b67ad0e3ff"
+  },
+  {
+    "name": "gen-t3-6",
+    "threadCount": 16,
+    "digest": "b67659063d84b89357e4a8806e617e9544a74774bbe151ca3fe0577a3c802dc0"
+  },
+  {
+    "name": "gen-t3-7",
+    "threadCount": 15,
+    "digest": "790d3330aa4497e33912e0a061439cf392f403493064339ef1dc0156ec2cc17a"
+  },
+  {
+    "name": "gen-t3-8",
+    "threadCount": 15,
+    "digest": "76b4d43f04ef59307499037843f1fd1b5171c66b9d5ea350fa57bec2db686255"
+  },
+  {
+    "name": "gen-t4-1",
+    "threadCount": 8,
+    "digest": "44ac479fe3e90dbc9fe9e3d5447cce551e257f0f5013485a57fd6d096babd8fb"
+  },
+  {
+    "name": "gen-t4-2",
+    "threadCount": 9,
+    "digest": "2a4f6962e5d277e2ffac4773be281bd9e4b801271fa273a9c2ce22b6e0d71694"
+  },
+  {
+    "name": "gen-t4-3",
+    "threadCount": 10,
+    "digest": "4c47a90379e8d1d45029a6270a70f0e1a0ce07bd67898191512e325e0b6d9d99"
+  },
+  {
+    "name": "gen-t4-4",
+    "threadCount": 11,
+    "digest": "fb28191b742099d51fe4e1c33c77c0413dc7c76d168a3de633a8cfffe5b80e69"
+  },
+  {
+    "name": "gen-t4-5",
+    "threadCount": 8,
+    "digest": "688726f40f68935227871b52c4a1026e96bcbad1379ce0cad9877b827c2164cd"
+  },
+  {
+    "name": "gen-t4-6",
+    "threadCount": 10,
+    "digest": "884da77406c06f421ec4f8557e6335a762a0d6bd6dea232106dcbd9cd4489095"
+  },
+  {
+    "name": "gen-t4-7",
+    "threadCount": 11,
+    "digest": "ca52c1781b2dc838e5c8b6ca7200accf1494a49685ced53e899150d1023795f1"
+  },
+  {
+    "name": "gen-t4-8",
+    "threadCount": 10,
+    "digest": "3b30b4b72461af10293c2d24e495235d6ad3a59a7f67ccda95cea4ab77473008"
+  },
+  {
+    "name": "digest-orient-a",
+    "threadCount": 2,
+    "digest": "a554ec184e83457e160a3742356a0f116c9cffc0ceb640824f85f3cd570207cf"
+  },
+  {
+    "name": "digest-orient-b",
+    "threadCount": 2,
+    "digest": "a554ec184e83457e160a3742356a0f116c9cffc0ceb640824f85f3cd570207cf"
+  }
+]

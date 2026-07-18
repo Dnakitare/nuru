@@ -91,12 +91,14 @@ const PRIORS: Record<TargetTier, Prior> = {
   // T3: larger, chain- and counting-heavy; still no hypotheticals. Higher degree
   // cap so the density needed for uniqueness at this size survives the stub.
   3: { extraEdgeFactor: 0.5, countClusters: [2, 5], binaryWeights: BIN(3, 2, 2, 2, 2), maxDegree: 9, anchors: 1 },
-  // T4: balanced binaries (OR/NAND stall tier≤2 propagation; IMPL/XOR/EQUIV pin
-  // structure) plus 1–2 COUNT clusters. Counts are the strongest uniqueness
-  // lever — they cut the model space hard while the weak binaries keep a
-  // depth-1 hypothesis (R4.1) necessary. too_easy_t4 drops any that ends up
-  // tier≤2-solvable. Low acceptance by nature.
-  4: { extraEdgeFactor: 0.65, countClusters: [2, 3], binaryWeights: BIN(2, 2, 3, 3, 1), maxDegree: 9, anchors: 1 },
+  // T4: OR/NAND-weighted binaries (stall tier≤2 propagation so a depth-1
+  // hypothesis becomes necessary) plus 3–4 COUNT clusters. Counts are the
+  // strongest uniqueness lever — they cut the model space hard (not_unique was
+  // the dominant T4 reject) while the weak binaries keep R4.1 necessary;
+  // too_easy_t4 drops any that ends up tier≤2-solvable. Widened from [2,3]
+  // clusters to lift the acceptance buffer above the 5% floor (was seed-fragile
+  // at ~5.3%). Low acceptance by nature.
+  4: { extraEdgeFactor: 0.7, countClusters: [3, 4], binaryWeights: BIN(2, 1, 3, 3, 1), maxDegree: 9, anchors: 1 },
 };
 
 // ── topology + assignment ────────────────────────────────────────────────────
@@ -260,7 +262,12 @@ export function generateOne(seed: number, req: GenRequest): GenAttempt {
   return { ok: true, puzzle, certificate: result.certificate, solve: result, seed };
 }
 
-/** Find the single anchor whose forced value unlocks the longest cascade (§3.3). */
+/**
+ * Find the single anchor whose forced value unlocks the most downstream
+ * knowledge, then re-verify (§3.3, one round). Uses total-newly-known count as
+ * the cascade proxy rather than literal longest-chain length — cheaper and, in
+ * practice, selects the same high-leverage anchor.
+ */
 function repairAnchor(n: number, constraints: Constraint[], A: Uint8Array, ceiling: 1 | 2 | 3 | 4): Constraint | null {
   const base = solve(n, constraints, { tierCeiling: ceiling });
   let best: { thread: number; known: number } | null = null;

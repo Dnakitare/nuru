@@ -63,14 +63,14 @@ function buildTierButtons(): void {
   }
 }
 
-function newKnot(tier: TargetTier): void {
+function newKnot(tier: TargetTier): boolean {
   const seed = (Math.floor(Math.random() * 0xffffffff) ^ 0x9e3779b9) >>> 0;
   let r = generate(LADDER[tier], seed);
   // Rejection sampling can miss within budget for a single seed; retry a few.
   for (let i = 0; !r.ok && i < 5; i++) r = generate(LADDER[tier], (seed + i * 2654435761) >>> 0);
   if (!r.ok) {
     $("stateNow").textContent = "generation stalled. try again";
-    return;
+    return false;
   }
   const p = r.puzzle;
   const wp: WirePuzzle = { threadCount: p.threads.length, layoutSeed: p.layoutSeed, constraints: [...p.constraints], solution: p.solution };
@@ -101,6 +101,7 @@ function newKnot(tier: TargetTier): void {
   ($("timer") as HTMLElement).classList.remove("solved");
   buildTierButtons();
   render();
+  return true;
 }
 
 // ── evaluation ───────────────────────────────────────────────────────────────
@@ -255,11 +256,20 @@ function onThreadClick(i: number): void {
   const s = state;
   if (!s || s.solveMs !== null) return;
   if (s.anchors.has(i)) return; // anchors are given, not interactive
+  // First touch after an interrupted demo: this is now a genuine attempt —
+  // restart the clock and re-enable logging (the demo left record=false and a
+  // demo-relative startMs).
+  if (!s.record && !s.revealed) {
+    s.record = true;
+    s.startMs = performance.now();
+  }
   // cycle unknown → true → false → unknown (RETRACT is the wrap back to unknown)
   const cur = s.committed[i];
   s.committed[i] = cur === U ? 1 : cur === 1 ? 0 : U;
   s.hintConstraint = null;
   render();
+  // render() replaced the SVG; restore keyboard focus to the acted thread
+  (svg.querySelector(`.thread[data-i="${i}"]`) as HTMLElement | null)?.focus();
 }
 
 function renderRules(s: State, ev: Eval): void {
@@ -324,7 +334,10 @@ function doHint(): void {
     $("stateNow").textContent = "clear the strain first, then ask for a hint"; // after render (renderStatus would overwrite)
     return;
   }
-  const r = solve(s.wp.threadCount, s.wp.constraints, { tierCeiling: 4, initial: s.committed });
+  // Solve from the GIVENS (anchors), not the player's live commitments — a
+  // wrong-but-consistent assertion would otherwise steer the hint down a doomed
+  // branch. Then point at the earliest canonical step the player hasn't reached.
+  const r = solve(s.wp.threadCount, s.wp.constraints, { tierCeiling: 4 });
   const next = r.trace.find((st) => ev.derived[st.thread] === U);
   s.hintConstraint = next ? next.constraint : null;
   render();
@@ -369,9 +382,12 @@ function narrate(step: { rule: number; constraint: number; thread: number; value
 
 async function runDemo(fresh: boolean): Promise<void> {
   const my = ++demoToken;
-  if (fresh || !state) newKnot(state?.tier ?? 2);
+  if (fresh || !state) {
+    // abort rather than replay onto the previous board if generation stalls
+    if (!newKnot(state?.tier ?? 2)) return;
+  }
   const s = state;
-  if (!s) return;
+  if (!s || my !== demoToken) return;
   // reset to the givens only, then replay from the top
   s.record = false; // a demonstration, not a player solve — keep it out of the log
   for (let i = 0; i < s.wp.threadCount; i++) if (!s.anchors.has(i)) s.committed[i] = U;

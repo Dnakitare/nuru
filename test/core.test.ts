@@ -59,6 +59,14 @@ describe("base64url round-trip", () => {
       expect([...base64urlDecode(s)]).toEqual([...bytes]);
     }
   });
+
+  it("rejects non-canonical trailing bits (strict, one encoding per payload)", () => {
+    // "AA" is the canonical 1-byte [0]; "AB" carries set discard-bits for the
+    // same byte and must be rejected so a payload has exactly one encoding.
+    expect([...base64urlDecode("AA")]).toEqual([0]);
+    expect(() => base64urlDecode("AB")).toThrow(/non-canonical/);
+    expect(() => base64urlDecode("AAB")).toThrow(/non-canonical/);
+  });
 });
 
 // A small hand-built puzzle graph over 4 threads.
@@ -202,5 +210,27 @@ describe("canonical digest (SPEC-CORE §6)", () => {
     const loneFwd: Constraint[] = [{ type: CType.IMPL, threads: [0, 1] }];
     const loneRev: Constraint[] = [{ type: CType.IMPL, threads: [1, 0] }];
     expect(puzzleDigestHex(2, loneRev)).toBe(puzzleDigestHex(2, loneFwd));
+  });
+
+  it("is authoring-order independent even for orientation-tied constraints (§6)", () => {
+    // IMPL(0,1) and IMPL(1,0) tie on (type, sorted threads, k) but differ in
+    // orientation; swapping their authoring order must not change the digest.
+    const base: Constraint[] = [
+      { type: CType.ANCHOR, threads: [0], k: 1 },
+      { type: CType.ANCHOR, threads: [1], k: 0 },
+      { type: CType.IMPL, threads: [0, 1] },
+      { type: CType.IMPL, threads: [1, 0] },
+    ];
+    const swapped = [base[0]!, base[1]!, base[3]!, base[2]!];
+    expect(puzzleDigestHex(2, swapped)).toBe(puzzleDigestHex(2, base));
+
+    // Same for order-insensitive COUNT constraints listed in different order.
+    const c1: Constraint[] = [
+      { type: CType.ANCHOR, threads: [0], k: 1 },
+      { type: CType.COUNT_EQ, threads: [0, 1, 2], k: 2 },
+      { type: CType.COUNT_EQ, threads: [2, 1, 0], k: 2 },
+    ];
+    const c2 = [c1[0]!, c1[2]!, c1[1]!];
+    expect(puzzleDigestHex(3, c2)).toBe(puzzleDigestHex(3, c1));
   });
 });

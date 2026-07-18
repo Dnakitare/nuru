@@ -28,7 +28,21 @@ function compare(a: Keyed, b: Keyed): number {
     if (la[i]! !== lb[i]!) return la[i]! - lb[i]!;
   }
   if (la.length !== lb.length) return la.length - lb.length;
-  return (a.c.k ?? -1) - (b.c.k ?? -1);
+  const ka = a.c.k ?? -1;
+  const kb = b.c.k ?? -1;
+  if (ka !== kb) return ka - kb;
+  // Final tiebreak on ORIGINAL (pre-remap) thread order. Two constraints that
+  // tie on (type, sorted threads, k) can still differ in orientation — e.g.
+  // IMPL(0,1) vs IMPL(1,0), or COUNT_EQ[0,1,2] vs COUNT_EQ[2,1,0] — and their
+  // emitted bytes differ. Without this the sort is not a total order, so their
+  // relative order (and thus the digest) would depend on authoring order and on
+  // JS sort stability, breaking the §6 order-independence guarantee and the
+  // cross-implementation lock. This tiebreak is monotonic-shift-invariant.
+  const oa = a.c.threads;
+  const ob = b.c.threads;
+  const m = Math.min(oa.length, ob.length);
+  for (let i = 0; i < m; i++) if (oa[i]! !== ob[i]!) return oa[i]! - ob[i]!;
+  return oa.length - ob.length;
 }
 
 /**

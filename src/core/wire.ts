@@ -130,8 +130,13 @@ export interface EncodePuzzleOpts {
 }
 
 export function encodePuzzle(p: WirePuzzle, opts: EncodePuzzleOpts = {}): string {
-  if (p.threadCount > MAX_THREADS) throw new Error(`threadCount ${p.threadCount} exceeds ${MAX_THREADS}`);
-  if (p.constraints.length > 255) throw new Error("constraintCount exceeds 255");
+  if (!Number.isInteger(p.threadCount) || p.threadCount < 0 || p.threadCount > MAX_THREADS) {
+    throw new Error(`threadCount ${p.threadCount} must be an integer in [0, ${MAX_THREADS}]`);
+  }
+  if (!Number.isInteger(p.constraints.length) || p.constraints.length > 255) throw new Error("constraintCount exceeds 255");
+  if (p.solution !== undefined && p.solution >> BigInt(p.threadCount) !== 0n) {
+    throw new Error("solution has bits set beyond threadCount");
+  }
 
   const includeSolution = opts.includeSolution === true && p.solution !== undefined;
   const w = new Writer();
@@ -153,8 +158,12 @@ export function encodePuzzle(p: WirePuzzle, opts: EncodePuzzleOpts = {}): string
       if (t < 0 || t >= p.threadCount) throw new Error(`thread id ${t} out of range`);
       w.u8(t);
     }
-    if (meta.hasK) w.u8((c.k ?? 0) & 0xff);
-    else if (c.k !== undefined) throw new Error(`${meta.name} must not carry k`);
+    if (meta.hasK) {
+      const k = c.k ?? 0;
+      if (c.type === CType.ANCHOR && (k < 0 || k > 1)) throw new Error("ANCHOR k must be 0 or 1");
+      if (isCountType(c.type) && (k < 0 || k > arity)) throw new Error(`${meta.name} k ${k} outside [0, ${arity}]`);
+      w.u8(k & 0xff);
+    } else if (c.k !== undefined) throw new Error(`${meta.name} must not carry k`);
   }
 
   if (includeSolution) w.u64(p.solution!);

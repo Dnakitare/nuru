@@ -291,48 +291,48 @@
     "name": "gen-t4-1",
     "difficulty": {
       "maxTier": 4,
-      "steps": 10,
+      "steps": 8,
       "maxChain": 8,
       "minWidth": 1,
       "hypoCount": 1,
-      "threadCount": 10,
-      "scalar": 10.4
+      "threadCount": 8,
+      "scalar": 10.3
     }
   },
   {
     "name": "gen-t4-2",
     "difficulty": {
       "maxTier": 4,
-      "steps": 7,
-      "maxChain": 6,
+      "steps": 9,
+      "maxChain": 7,
       "minWidth": 1,
-      "hypoCount": 2,
-      "threadCount": 7,
-      "scalar": 11.15
+      "hypoCount": 1,
+      "threadCount": 9,
+      "scalar": 10.05
     }
   },
   {
     "name": "gen-t4-3",
     "difficulty": {
       "maxTier": 4,
-      "steps": 11,
-      "maxChain": 8,
+      "steps": 10,
+      "maxChain": 7,
       "minWidth": 1,
       "hypoCount": 2,
-      "threadCount": 11,
-      "scalar": 11.95
+      "threadCount": 10,
+      "scalar": 11.6
     }
   },
   {
     "name": "gen-t4-4",
     "difficulty": {
       "maxTier": 4,
-      "steps": 10,
-      "maxChain": 8,
+      "steps": 11,
+      "maxChain": 7,
       "minWidth": 1,
       "hypoCount": 1,
-      "threadCount": 10,
-      "scalar": 10.4
+      "threadCount": 11,
+      "scalar": 10.15
     }
   },
   {
@@ -352,35 +352,35 @@
     "difficulty": {
       "maxTier": 4,
       "steps": 10,
-      "maxChain": 9,
+      "maxChain": 7,
       "minWidth": 1,
-      "hypoCount": 3,
+      "hypoCount": 2,
       "threadCount": 10,
-      "scalar": 13.7
+      "scalar": 11.6
     }
   },
   {
     "name": "gen-t4-7",
     "difficulty": {
       "maxTier": 4,
-      "steps": 12,
-      "maxChain": 9,
+      "steps": 11,
+      "maxChain": 8,
       "minWidth": 1,
       "hypoCount": 1,
-      "threadCount": 12,
-      "scalar": 10.8
+      "threadCount": 11,
+      "scalar": 10.45
     }
   },
   {
     "name": "gen-t4-8",
     "difficulty": {
       "maxTier": 4,
-      "steps": 8,
-      "maxChain": 6,
+      "steps": 10,
+      "maxChain": 7,
       "minWidth": 1,
-      "hypoCount": 2,
-      "threadCount": 8,
-      "scalar": 11.2
+      "hypoCount": 1,
+      "threadCount": 10,
+      "scalar": 10.1
     }
   }
 ]

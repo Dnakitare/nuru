@@ -75,7 +75,7 @@ describe("emitted puzzles satisfy every invariant", () => {
       if (tier === 4) expect(p.difficulty.hypoCount).toBeGreaterThanOrEqual(1);
       else expect(p.difficulty.hypoCount).toBe(0);
       // Independent verification pass.
-      expect(verifyPuzzle(p, r.certificate, tier)).toBe(true);
+      expect(verifyPuzzle(p, r.certificate, tier).ok).toBe(true);
     });
   }
 });

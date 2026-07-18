@@ -6,7 +6,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { decodePuzzle, decodeResult, encodePuzzle, peekKind, PuzzleRef } from "../src/core/index.js";
+import { decodePuzzle, decodeResult, encodePuzzle, peekKind, puzzleDigestHex, PuzzleRef } from "../src/core/index.js";
 import { grade } from "../src/gen/index.js";
 import { solve } from "../src/solver/index.js";
 
@@ -65,6 +65,26 @@ describe("solve vectors — traces reproduce exactly", () => {
       );
     });
   }
+});
+
+describe("digest vectors — canonical digest reproduces (§6)", () => {
+  const digestV = load("digest/digest.json");
+  const solveV: any[] = load("solve/solve.json");
+  const byName = new Map(solveV.map((s) => [s.name, s]));
+  for (const v of digestV) {
+    const sol = byName.get(v.name);
+    if (!sol) continue; // orientation vectors have no payload; checked below
+    it(`${v.name} recomputes its canonical digest`, () => {
+      const p = decodePuzzle(sol.payload);
+      expect(puzzleDigestHex(p.threadCount, p.constraints)).toBe(v.digest);
+    });
+  }
+  it("digest is authoring-order independent (orient-a === orient-b)", () => {
+    const a = digestV.find((v: any) => v.name === "digest-orient-a");
+    const b = digestV.find((v: any) => v.name === "digest-orient-b");
+    expect(a && b).toBeTruthy();
+    expect(a.digest).toBe(b.digest);
+  });
 });
 
 describe("grade vectors — DifficultyVectors reproduce", () => {

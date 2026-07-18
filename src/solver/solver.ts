@@ -259,6 +259,10 @@ function certify(trace: readonly Step[]): string {
 }
 
 export function solve(threadCount: number, constraints: readonly Constraint[], opts: SolveOptions): SolveResult {
+  // The certificate packs the constraint index into one byte (and -1→0 for R4),
+  // so >254 constraints would alias. v1 sizes are far below this; guard loudly
+  // rather than emit a silently-colliding certificate.
+  if (constraints.length > 254) throw new Error("solver: >254 constraints unsupported (certificate byte width)");
   const s = new Int8Array(threadCount).fill(U);
   if (opts.initial) s.set(opts.initial.subarray(0, threadCount));
   const ceiling = opts.tierCeiling;
@@ -270,6 +274,13 @@ export function solve(threadCount: number, constraints: readonly Constraint[], o
 
   for (;;) {
     // Tier-ordered greedy: lowest non-empty tier wins.
+    // `width` = the number of applications at the FRONTIER tier (the lowest
+    // non-empty one the careful reasoner is actually choosing among), which
+    // drives grade.minWidth. This is a deliberate reading of SPEC-GENERATOR §4.1
+    // ("all currently-available rule applications"): a tier-ordered reasoner
+    // considers the cheapest available moves, not simultaneously-available
+    // higher-tier ones, so the frontier count is the honest branching factor.
+    // Flagged for owner confirmation like the maxTier∈{1,2,4} decision.
     let applied: Forcing | null = null;
     let width = 0;
     for (let tier = 0; tier <= 2; tier++) {

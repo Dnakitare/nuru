@@ -3422,42 +3422,84 @@
   {
     "name": "puzzle-gen-t4-1",
     "kind": "puzzle",
-    "payload": "fmb1_AAoUK68xYgADAgIHAwIJAgECBAICAgMJBAIAAwUCAQkBAgUCBAIGAgMCCAEBAgMIAwIEAwUCAAYEAgcJAQIFCAMCBwgEAgAJBwQDBwIGAQYECAcFAAEGBQYAAgQFAgABBQCtelER",
+    "payload": "fmb1_AAgRTI-NoAABAgYCBAIHAgMCBQcEAgAHAQIDBwQCAQMEAgQFAwIGAwECBAMFAgIBAgIAAwUCBgUBAgYBCAQABQcGAQcFAQIABAMEBgUCBgMBBwQAAQEBE9Xd1w",
     "decoded": {
-      "threadCount": 10,
-      "layoutSeed": 1647423275,
+      "threadCount": 8,
+      "layoutSeed": 2693631820,
       "constraints": [
         {
-          "type": 3,
+          "type": 1,
           "threads": [
-            2,
-            7
+            6,
+            2
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            7,
+            2
           ]
         },
         {
           "type": 3,
           "threads": [
-            9,
-            2
+            5,
+            7
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            0,
+            7
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            3,
+            7
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            1,
+            3
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            4,
+            5
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            6,
+            3
           ]
         },
         {
           "type": 1,
           "threads": [
             4,
-            2
+            3
+          ]
+        },
+        {
+          "type": 5,
+          "threads": [
+            2,
+            1
           ]
         },
         {
           "type": 2,
           "threads": [
-            3,
-            9
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
             0,
             3
           ]
@@ -3465,117 +3507,55 @@
         {
           "type": 5,
           "threads": [
-            1,
-            9
+            6,
+            5
           ]
         },
         {
           "type": 1,
           "threads": [
-            5,
-            2
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
             6,
-            2
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            8,
             1
           ]
         },
         {
-          "type": 1,
-          "threads": [
-            3,
-            8
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            4,
-            3
-          ]
-        },
-        {
-          "type": 5,
+          "type": 8,
           "threads": [
             0,
-            6
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            7,
-            9
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
             5,
-            8
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
             7,
-            8
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            0,
-            9
-          ]
+            6
+          ],
+          "k": 1
         },
         {
           "type": 7,
           "threads": [
-            3,
-            7,
+            1,
             2,
-            6
-          ],
-          "k": 1
-        },
-        {
-          "type": 6,
-          "threads": [
-            8,
-            7,
-            5,
-            0
-          ],
-          "k": 1
-        },
-        {
-          "type": 6,
-          "threads": [
-            6,
             0,
-            2,
             4,
-            5
+            3
           ],
-          "k": 2
+          "k": 4
+        },
+        {
+          "type": 6,
+          "threads": [
+            2,
+            6,
+            3,
+            1,
+            7
+          ],
+          "k": 4
         },
         {
           "type": 0,
           "threads": [
-            5
+            1
           ],
-          "k": 0
+          "k": 1
         }
       ]
     }
@@ -3583,22 +3563,43 @@
   {
     "name": "puzzle-gen-t4-2",
     "kind": "puzzle",
-    "payload": "fmb1_AAcOi323RQACAgUEAwIABAUCBgQEAgMGAQIBBQICAgMDAgIBAQICBgMCBgAEAgMAAgIGBQYFAAUDAgYCBgUEAQMGAgMAAQIAWLQAAA",
+    "payload": "fmb1_AAkTxjLI5AADAgADAQIEAwQCAgAEAgEEBAIFBAUCBgEEAggDBAIHAQQCCAcEAgECBAIFAgICAQgEAgcCBAICBgYEBgIAAQMIAwYHAAIGBQgGAgUAAggFCAMEAgADAAEHAS34B5k",
     "decoded": {
-      "threadCount": 7,
-      "layoutSeed": 1169653131,
+      "threadCount": 9,
+      "layoutSeed": 3838325446,
       "constraints": [
-        {
-          "type": 2,
-          "threads": [
-            5,
-            4
-          ]
-        },
         {
           "type": 3,
           "threads": [
             0,
+            3
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            4,
+            3
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            2,
+            0
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            1,
+            4
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            5,
             4
           ]
         },
@@ -3606,93 +3607,112 @@
           "type": 5,
           "threads": [
             6,
-            4
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            3,
-            6
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
-            1,
-            5
-          ]
-        },
-        {
-          "type": 2,
-          "threads": [
-            2,
-            3
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            2,
             1
           ]
         },
         {
-          "type": 1,
+          "type": 4,
           "threads": [
-            2,
-            6
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            6,
-            0
+            8,
+            3
           ]
         },
         {
           "type": 4,
           "threads": [
-            3,
-            0
+            7,
+            1
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            8,
+            7
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            1,
+            2
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            5,
+            2
           ]
         },
         {
           "type": 2,
           "threads": [
-            6,
-            5
+            1,
+            8
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            7,
+            2
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            2,
+            6
           ]
         },
         {
           "type": 6,
           "threads": [
-            0,
-            5,
-            3,
+            6,
             2,
-            6
+            0,
+            1
+          ],
+          "k": 3
+        },
+        {
+          "type": 8,
+          "threads": [
+            6,
+            7,
+            0
           ],
           "k": 2
         },
         {
           "type": 6,
           "threads": [
-            4,
-            1,
-            3,
+            8,
             6,
-            2
+            2,
+            5,
+            0
+          ],
+          "k": 2
+        },
+        {
+          "type": 8,
+          "threads": [
+            8,
+            3,
+            4,
+            2,
+            0
           ],
           "k": 3
         },
         {
           "type": 0,
           "threads": [
-            2
+            7
           ],
-          "k": 0
+          "k": 1
         }
       ]
     }
@@ -3700,164 +3720,158 @@
   {
     "name": "puzzle-gen-t4-3",
     "kind": "puzzle",
-    "payload": "fmb1_AAsVk83b6wACAgcKBAICBwQCCQICAgEHBAIIAQECBAIBAgUHBQIDAQMCAAUEAgYJAwIFAQUCCQMBAgoEAQIHAwQCAQkDAgYFAwIHCAgEBggHAAMGBAgGBwADBwQGAgkHAwABBAF6WHMf",
+    "payload": "fmb1_AAoUicagMAAEAggJAQIDCAMCBgkDAgEGBAIFAwUCAgkCAgAIAwIHBgECBAcCAgcDAQIBBwMCAwQFAgQBAQIGAAECAQMBAgcJBgQCBQcBAwYFBgAFCQQCBgQABAgCAgABBQFdtVGx",
     "decoded": {
-      "threadCount": 11,
-      "layoutSeed": 3957050771,
+      "threadCount": 10,
+      "layoutSeed": 815842953,
       "constraints": [
-        {
-          "type": 2,
-          "threads": [
-            7,
-            10
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            2,
-            7
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            9,
-            2
-          ]
-        },
-        {
-          "type": 2,
-          "threads": [
-            1,
-            7
-          ]
-        },
         {
           "type": 4,
           "threads": [
             8,
-            1
+            9
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            3,
+            8
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            6,
+            9
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            1,
+            6
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            5,
+            3
+          ]
+        },
+        {
+          "type": 5,
+          "threads": [
+            2,
+            9
+          ]
+        },
+        {
+          "type": 2,
+          "threads": [
+            0,
+            8
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            7,
+            6
           ]
         },
         {
           "type": 1,
           "threads": [
             4,
-            2
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
-            5,
             7
           ]
         },
         {
-          "type": 5,
+          "type": 2,
           "threads": [
-            3,
-            1
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            0,
-            5
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            6,
-            9
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            5,
-            1
-          ]
-        },
-        {
-          "type": 5,
-          "threads": [
-            9,
+            7,
             3
           ]
         },
         {
           "type": 1,
           "threads": [
-            10,
+            1,
+            7
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            3,
             4
           ]
         },
         {
+          "type": 5,
+          "threads": [
+            4,
+            1
+          ]
+        },
+        {
           "type": 1,
           "threads": [
-            7,
+            6,
+            0
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            1,
             3
           ]
         },
         {
-          "type": 4,
+          "type": 1,
           "threads": [
-            1,
+            7,
             9
           ]
         },
         {
-          "type": 3,
+          "type": 6,
           "threads": [
-            6,
-            5
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
+            2,
+            5,
             7,
-            8
-          ]
-        },
-        {
-          "type": 8,
-          "threads": [
-            6,
-            8,
-            7,
-            0
+            1
           ],
           "k": 3
         },
         {
           "type": 6,
           "threads": [
-            8,
             6,
-            7,
-            0
+            0,
+            5,
+            9,
+            4
           ],
-          "k": 3
+          "k": 2
         },
         {
-          "type": 7,
+          "type": 6,
           "threads": [
-            6,
-            2,
-            9,
-            7
+            0,
+            4,
+            8,
+            2
           ],
-          "k": 3
+          "k": 2
         },
         {
           "type": 0,
           "threads": [
-            4
+            5
           ],
           "k": 1
         }
@@ -3867,158 +3881,170 @@
   {
     "name": "puzzle-gen-t4-4",
     "kind": "puzzle",
-    "payload": "fmb1_AAoUyyQ37gABAgYDBAIJAwECAQMCAgIBAgIFAwECCAMBAgABAwIHBgICBAcEAgEHAgIBBgQCCAEBAgIAAQIABgUCBAgDAgMCBwUDAAYCCQEGBAAIBwIBBgQCCAQHAgABAwFc3agz",
+    "payload": "fmb1_AAsWSzzEHAABAgoFBQIICgECAAoDAgEFAQIDAQMCBAUEAgIKBAIJBQQCBgUEAgcEAwIDBgQCAAUDAgoEAQIGAQQCCQAEAgAHBAIDCQQCBwUGBAgGAAUDBgQHAQkGAggDBAIAAgABBwFKbgNR",
     "decoded": {
-      "threadCount": 10,
-      "layoutSeed": 3996591307,
+      "threadCount": 11,
+      "layoutSeed": 482622539,
       "constraints": [
         {
           "type": 1,
           "threads": [
-            6,
-            3
+            10,
+            5
+          ]
+        },
+        {
+          "type": 5,
+          "threads": [
+            8,
+            10
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            0,
+            10
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            1,
+            5
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            3,
+            1
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            4,
+            5
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            2,
+            10
           ]
         },
         {
           "type": 4,
           "threads": [
             9,
-            3
+            5
           ]
         },
         {
-          "type": 1,
+          "type": 4,
           "threads": [
-            1,
-            3
+            6,
+            5
           ]
         },
         {
-          "type": 2,
+          "type": 4,
           "threads": [
-            2,
-            1
-          ]
-        },
-        {
-          "type": 2,
-          "threads": [
-            5,
-            3
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
-            8,
-            3
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
-            0,
-            1
+            7,
+            4
           ]
         },
         {
           "type": 3,
           "threads": [
-            7,
-            6
-          ]
-        },
-        {
-          "type": 2,
-          "threads": [
-            4,
-            7
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            1,
-            7
-          ]
-        },
-        {
-          "type": 2,
-          "threads": [
-            1,
+            3,
             6
           ]
         },
         {
           "type": 4,
           "threads": [
-            8,
-            1
+            0,
+            5
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            10,
+            4
           ]
         },
         {
           "type": 1,
           "threads": [
-            2,
+            6,
+            1
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            9,
             0
           ]
         },
         {
-          "type": 1,
+          "type": 4,
           "threads": [
             0,
-            6
-          ]
-        },
-        {
-          "type": 5,
-          "threads": [
-            4,
-            8
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            3,
-            2
-          ]
-        },
-        {
-          "type": 7,
-          "threads": [
-            3,
-            0,
-            6,
-            2,
-            9
-          ],
-          "k": 1
-        },
-        {
-          "type": 6,
-          "threads": [
-            0,
-            8,
-            7,
-            2
-          ],
-          "k": 1
-        },
-        {
-          "type": 6,
-          "threads": [
-            2,
-            8,
-            4,
             7
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            3,
+            9
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            7,
+            5
+          ]
+        },
+        {
+          "type": 6,
+          "threads": [
+            8,
+            6,
+            0,
+            5
+          ],
+          "k": 3
+        },
+        {
+          "type": 6,
+          "threads": [
+            7,
+            1,
+            9,
+            6
+          ],
+          "k": 2
+        },
+        {
+          "type": 8,
+          "threads": [
+            4,
+            2,
+            0
           ],
           "k": 2
         },
         {
           "type": 0,
           "threads": [
-            3
+            7
           ],
           "k": 1
         }
@@ -4028,130 +4054,137 @@
   {
     "name": "puzzle-gen-t4-5",
     "kind": "puzzle",
-    "payload": "fmb1_AAgQU1g24wACAgcBAQIBBgECAQADAgIBAgIFAAMCBAUBAgMAAwIEAgUCBgcBAgMFBQIGAgUCAwQGBQcCBgMBAwcDBAYAAgcDBQACAgABBQB_CwcF",
+    "payload": "fmb1_AAgRBDNtWQABAgUBBAIAAQECBwEEAgIBAwIGBwUCAwEEAgQBAwICBwICAgMFAgUAAQIGAgQCAgQDAgACBwMEBwECBgUFBwMCAAMGAwEGBwEAAQQBkw2xjQ",
     "decoded": {
       "threadCount": 8,
-      "layoutSeed": 3811989587,
+      "layoutSeed": 1500328708,
       "constraints": [
         {
-          "type": 2,
+          "type": 1,
+          "threads": [
+            5,
+            1
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            0,
+            1
+          ]
+        },
+        {
+          "type": 1,
           "threads": [
             7,
             1
           ]
         },
         {
-          "type": 1,
-          "threads": [
-            1,
-            6
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
-            1,
-            0
-          ]
-        },
-        {
-          "type": 3,
+          "type": 4,
           "threads": [
             2,
             1
           ]
         },
         {
-          "type": 2,
-          "threads": [
-            5,
-            0
-          ]
-        },
-        {
           "type": 3,
-          "threads": [
-            4,
-            5
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
-            3,
-            0
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            4,
-            2
-          ]
-        },
-        {
-          "type": 5,
           "threads": [
             6,
             7
           ]
         },
         {
-          "type": 1,
+          "type": 5,
           "threads": [
             3,
-            5
+            1
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            4,
+            1
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            2,
+            7
+          ]
+        },
+        {
+          "type": 2,
+          "threads": [
+            2,
+            3
           ]
         },
         {
           "type": 5,
+          "threads": [
+            5,
+            0
+          ]
+        },
+        {
+          "type": 1,
           "threads": [
             6,
             2
           ]
         },
         {
-          "type": 5,
+          "type": 4,
           "threads": [
-            3,
+            2,
             4
           ]
         },
         {
-          "type": 6,
+          "type": 3,
           "threads": [
-            7,
-            2,
-            6,
-            3,
-            1
-          ],
-          "k": 3
+            0,
+            2
+          ]
         },
         {
           "type": 7,
           "threads": [
             4,
-            6,
-            0
+            7,
+            1
           ],
           "k": 2
         },
         {
-          "type": 7,
+          "type": 6,
           "threads": [
             5,
-            0,
-            2
+            7,
+            3,
+            2,
+            0
           ],
-          "k": 2
+          "k": 3
+        },
+        {
+          "type": 6,
+          "threads": [
+            1,
+            6,
+            7
+          ],
+          "k": 1
         },
         {
           "type": 0,
           "threads": [
-            5
+            4
           ],
-          "k": 0
+          "k": 1
         }
       ]
     }
@@ -4159,78 +4192,50 @@
   {
     "name": "puzzle-gen-t4-6",
     "kind": "puzzle",
-    "payload": "fmb1_AAoU6BG4cgABAggDBAIGCAECBwMBAgIHAwIEBwQCAQQDAgUHBAIABAQCCQcDAgUBAwIAAgQCAQYCAggHAQIACQECAwQDAgUCCAUECAkFBwMHBAUECAACBgMGAQICAAEFAAjzPSM",
+    "payload": "fmb1_AAoVqJIReQAEAgkBAQIFAQECBAEEAgIJBQIHAQECAwEDAgAEAQIACAECAAYBAgIIAQIBBgMCBgcBAgUDAQIACQMCCQQDAgYEBgQCCAMGAwcFAQADCQICCAUJAQcAAwEGAwEIBQEAAQUAXJcKdQ",
     "decoded": {
       "threadCount": 10,
-      "layoutSeed": 1924665832,
+      "layoutSeed": 2031194792,
       "constraints": [
-        {
-          "type": 1,
-          "threads": [
-            8,
-            3
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            6,
-            8
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
-            7,
-            3
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
-            2,
-            7
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            4,
-            7
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            1,
-            4
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            5,
-            7
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            0,
-            4
-          ]
-        },
         {
           "type": 4,
           "threads": [
             9,
-            7
+            1
           ]
         },
         {
-          "type": 3,
+          "type": 1,
           "threads": [
             5,
+            1
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            4,
+            1
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            2,
+            9
+          ]
+        },
+        {
+          "type": 5,
+          "threads": [
+            7,
+            1
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            3,
             1
           ]
         },
@@ -4238,21 +4243,49 @@
           "type": 3,
           "threads": [
             0,
-            2
+            4
           ]
         },
         {
-          "type": 4,
+          "type": 1,
+          "threads": [
+            0,
+            8
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            0,
+            6
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            2,
+            8
+          ]
+        },
+        {
+          "type": 1,
           "threads": [
             1,
             6
           ]
         },
         {
-          "type": 2,
+          "type": 3,
           "threads": [
-            8,
+            6,
             7
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            5,
+            3
           ]
         },
         {
@@ -4263,48 +4296,59 @@
           ]
         },
         {
-          "type": 1,
+          "type": 3,
           "threads": [
-            3,
+            9,
             4
           ]
         },
         {
           "type": 3,
           "threads": [
-            5,
-            2
+            6,
+            4
           ]
         },
         {
-          "type": 8,
+          "type": 6,
           "threads": [
-            4,
+            2,
             8,
-            9,
-            5,
-            7
+            3,
+            6
           ],
           "k": 3
         },
         {
           "type": 7,
           "threads": [
-            5,
-            4,
-            8,
-            0
+            1,
+            0,
+            3,
+            9,
+            2
           ],
           "k": 2
         },
         {
+          "type": 8,
+          "threads": [
+            9,
+            1,
+            7,
+            0,
+            3
+          ],
+          "k": 1
+        },
+        {
           "type": 6,
           "threads": [
-            6,
             1,
-            2
+            8,
+            5
           ],
-          "k": 2
+          "k": 1
         },
         {
           "type": 0,
@@ -4319,50 +4363,275 @@
   {
     "name": "puzzle-gen-t4-7",
     "kind": "puzzle",
-    "payload": "fmb1_AAwW7rF6lgADAgMEAwILBAUCCQsBAgcDAQIACQMCBQMEAgIAAQIKAwMCBgkDAgEFAwIICgQCAQIDAgoLBAIAAQMCBgoDAgsCAgIGBwMCCQIDAgkIBgMIBwkCCAQKAgYIAgABBwH6Q9T3",
+    "payload": "fmb1_AAsXbFqEsQAFAgEJBAIDCQUCBgkDAgoGBAIIAQECBAMBAgcEAQICBgQCAAoBAgUBAwIDBgMCBQADAggHBAIACAMCBAADAgQIBAIJCgMCBAEGBAgDBwQCBgMDBgEBBgQIBAYAAgYECAkEAAIAAQcABrUhFw",
     "decoded": {
-      "threadCount": 12,
-      "layoutSeed": 2524623342,
+      "threadCount": 11,
+      "layoutSeed": 2978241132,
       "constraints": [
         {
-          "type": 3,
+          "type": 5,
           "threads": [
-            3,
-            4
+            1,
+            9
           ]
         },
         {
-          "type": 3,
+          "type": 4,
           "threads": [
-            11,
-            4
+            3,
+            9
           ]
         },
         {
           "type": 5,
           "threads": [
-            9,
-            11
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
-            7,
-            3
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
-            0,
+            6,
             9
           ]
         },
         {
           "type": 3,
           "threads": [
+            10,
+            6
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            8,
+            1
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            4,
+            3
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            7,
+            4
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            2,
+            6
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            0,
+            10
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
             5,
+            1
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            3,
+            6
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            5,
+            0
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            8,
+            7
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            0,
+            8
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            4,
+            0
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            4,
+            8
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            9,
+            10
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            4,
+            1
+          ]
+        },
+        {
+          "type": 6,
+          "threads": [
+            8,
+            3,
+            7,
+            4
+          ],
+          "k": 2
+        },
+        {
+          "type": 6,
+          "threads": [
+            3,
+            6,
+            1
+          ],
+          "k": 1
+        },
+        {
+          "type": 6,
+          "threads": [
+            8,
+            4,
+            6,
+            0
+          ],
+          "k": 2
+        },
+        {
+          "type": 6,
+          "threads": [
+            8,
+            9,
+            4,
+            0
+          ],
+          "k": 2
+        },
+        {
+          "type": 0,
+          "threads": [
+            7
+          ],
+          "k": 0
+        }
+      ]
+    }
+  },
+  {
+    "name": "puzzle-gen-t4-8",
+    "kind": "puzzle",
+    "payload": "fmb1_AAoV0wwzxAABAgQAAQIEBgQCAwYFAggAAwIJAAMCBwYEAgUDBAIBBAICAgMDAgkFAwIIBwECCQMEAgIABQIBBgMCBwUBAgcDBgUJBgQDAQMGBAYJAwUCBgQBCAMCAwYDCAAEAgABBgHTzvnd",
+    "decoded": {
+      "threadCount": 10,
+      "layoutSeed": 3291679955,
+      "constraints": [
+        {
+          "type": 1,
+          "threads": [
+            4,
+            0
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            4,
+            6
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            3,
+            6
+          ]
+        },
+        {
+          "type": 5,
+          "threads": [
+            8,
+            0
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            9,
+            0
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            7,
+            6
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            5,
+            3
+          ]
+        },
+        {
+          "type": 4,
+          "threads": [
+            1,
+            4
+          ]
+        },
+        {
+          "type": 2,
+          "threads": [
+            2,
+            3
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            9,
+            5
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            8,
+            7
+          ]
+        },
+        {
+          "type": 1,
+          "threads": [
+            9,
             3
           ]
         },
@@ -4374,235 +4643,70 @@
           ]
         },
         {
-          "type": 1,
-          "threads": [
-            10,
-            3
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            6,
-            9
-          ]
-        },
-        {
-          "type": 3,
+          "type": 5,
           "threads": [
             1,
+            6
+          ]
+        },
+        {
+          "type": 3,
+          "threads": [
+            7,
             5
           ]
         },
         {
-          "type": 3,
+          "type": 1,
           "threads": [
-            8,
-            10
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            1,
-            2
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            10,
-            11
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            0,
-            1
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            6,
-            10
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            11,
-            2
-          ]
-        },
-        {
-          "type": 2,
-          "threads": [
-            6,
-            7
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            9,
-            2
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            9,
-            8
+            7,
+            3
           ]
         },
         {
           "type": 6,
           "threads": [
-            8,
-            7,
-            9
-          ],
-          "k": 2
-        },
-        {
-          "type": 8,
-          "threads": [
-            10,
-            2,
+            9,
             6,
-            8
-          ],
-          "k": 2
-        },
-        {
-          "type": 0,
-          "threads": [
-            7
-          ],
-          "k": 1
-        }
-      ]
-    }
-  },
-  {
-    "name": "puzzle-gen-t4-8",
-    "kind": "puzzle",
-    "payload": "fmb1_AAgPB1snhwAEAgYFAQIDBgQCAQUDAgQDAgICBAQCBwYBAgACAgIFAwQCBAYEAgYBBAIHBAICBgIGBAACBwQCBgUCBAYBBQMAAQUBcpxdZQ",
-    "decoded": {
-      "threadCount": 8,
-      "layoutSeed": 2267503367,
-      "constraints": [
-        {
-          "type": 4,
-          "threads": [
-            6,
-            5
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
+            4,
             3,
-            6
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            1,
-            5
-          ]
-        },
-        {
-          "type": 3,
-          "threads": [
-            4,
-            3
-          ]
-        },
-        {
-          "type": 2,
-          "threads": [
-            2,
-            4
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            7,
-            6
-          ]
-        },
-        {
-          "type": 1,
-          "threads": [
-            0,
-            2
-          ]
-        },
-        {
-          "type": 2,
-          "threads": [
-            5,
-            3
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            4,
-            6
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            6,
             1
-          ]
-        },
-        {
-          "type": 4,
-          "threads": [
-            7,
-            4
-          ]
-        },
-        {
-          "type": 2,
-          "threads": [
-            6,
-            2
-          ]
-        },
-        {
-          "type": 6,
-          "threads": [
-            0,
-            2,
-            7,
-            4
-          ],
-          "k": 2
-        },
-        {
-          "type": 6,
-          "threads": [
-            2,
-            4,
-            6,
-            1,
-            5
           ],
           "k": 3
         },
         {
+          "type": 6,
+          "threads": [
+            6,
+            9,
+            3,
+            5
+          ],
+          "k": 2
+        },
+        {
+          "type": 6,
+          "threads": [
+            1,
+            8,
+            3,
+            2
+          ],
+          "k": 3
+        },
+        {
+          "type": 6,
+          "threads": [
+            8,
+            0,
+            4
+          ],
+          "k": 2
+        },
+        {
           "type": 0,
           "threads": [
-            5
+            6
           ],
           "k": 1
         }

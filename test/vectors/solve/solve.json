@@ -1663,100 +1663,79 @@
   },
   {
     "name": "gen-t4-1",
-    "payload": "fmb1_AAoUK68xYgADAgIHAwIJAgECBAICAgMJBAIAAwUCAQkBAgUCBAIGAgMCCAEBAgMIAwIEAwUCAAYEAgcJAQIFCAMCBwgEAgAJBwQDBwIGAQYECAcFAAEGBQYAAgQFAgABBQCtelER",
-    "threadCount": 10,
-    "certificate": "861f13d139b58a329eaf5743201ba4e22a7f7e684facac92818633756e975e78",
+    "payload": "fmb1_AAgRTI-NoAABAgYCBAIHAgMCBQcEAgAHAQIDBwQCAQMEAgQFAwIGAwECBAMFAgIBAgIAAwUCBgUBAgYBCAQABQcGAQcFAQIABAMEBgUCBgMBBwQAAQEBE9Xd1w",
+    "threadCount": 8,
+    "certificate": "e4f3e1cafdd84120a49b2af00f98c7f4b91dab3e10a23d384f4eddb6df7972c5",
     "trace": [
       {
         "rule": 0,
         "tier": 0,
-        "constraint": 19,
-        "thread": 5,
-        "value": 0
+        "constraint": 16,
+        "thread": 1,
+        "value": 1
+      },
+      {
+        "rule": 16,
+        "tier": 1,
+        "constraint": 9,
+        "thread": 2,
+        "value": 1
       },
       {
         "rule": 41,
         "tier": 4,
         "constraint": -1,
         "thread": 0,
-        "value": 1
-      },
-      {
-        "rule": 16,
-        "tier": 1,
-        "constraint": 11,
-        "thread": 6,
-        "value": 1
-      },
-      {
-        "rule": 22,
-        "tier": 2,
-        "constraint": 16,
-        "thread": 2,
         "value": 0
       },
       {
-        "rule": 12,
-        "tier": 1,
-        "constraint": 2,
-        "thread": 4,
-        "value": 0
-      },
-      {
-        "rule": 22,
-        "tier": 2,
-        "constraint": 16,
-        "thread": 3,
-        "value": 0
-      },
-      {
-        "rule": 13,
+        "rule": 15,
         "tier": 1,
         "constraint": 3,
-        "thread": 9,
-        "value": 1
-      },
-      {
-        "rule": 16,
-        "tier": 1,
-        "constraint": 5,
-        "thread": 1,
+        "thread": 7,
         "value": 1
       },
       {
         "rule": 14,
         "tier": 1,
-        "constraint": 8,
-        "thread": 8,
+        "constraint": 2,
+        "thread": 5,
         "value": 0
       },
       {
-        "rule": 22,
-        "tier": 2,
-        "constraint": 16,
-        "thread": 7,
+        "rule": 15,
+        "tier": 1,
+        "constraint": 6,
+        "thread": 4,
+        "value": 1
+      },
+      {
+        "rule": 11,
+        "tier": 1,
+        "constraint": 8,
+        "thread": 3,
+        "value": 1
+      },
+      {
+        "rule": 14,
+        "tier": 1,
+        "constraint": 7,
+        "thread": 6,
         "value": 0
       }
     ]
   },
   {
     "name": "gen-t4-2",
-    "payload": "fmb1_AAcOi323RQACAgUEAwIABAUCBgQEAgMGAQIBBQICAgMDAgIBAQICBgMCBgAEAgMAAgIGBQYFAAUDAgYCBgUEAQMGAgMAAQIAWLQAAA",
-    "threadCount": 7,
-    "certificate": "83bdb08ba41728e05a5d460720ae66c38c13347a49c63ea1a5d1baf3ab202afc",
+    "payload": "fmb1_AAkTxjLI5AADAgADAQIEAwQCAgAEAgEEBAIFBAUCBgEEAggDBAIHAQQCCAcEAgECBAIFAgICAQgEAgcCBAICBgYEBgIAAQMIAwYHAAIGBQgGAgUAAggFCAMEAgADAAEHAS34B5k",
+    "threadCount": 9,
+    "certificate": "caa34fa6720a43ed23f3ca3ad1f30d84cc8a5923024c9510bba13465d41851cf",
     "trace": [
       {
         "rule": 0,
         "tier": 0,
-        "constraint": 13,
-        "thread": 2,
-        "value": 0
-      },
-      {
-        "rule": 13,
-        "tier": 1,
-        "constraint": 5,
-        "thread": 3,
+        "constraint": 18,
+        "thread": 7,
         "value": 1
       },
       {
@@ -1767,53 +1746,67 @@
         "value": 0
       },
       {
-        "rule": 41,
-        "tier": 4,
-        "constraint": -1,
-        "thread": 1,
-        "value": 0
+        "rule": 15,
+        "tier": 1,
+        "constraint": 2,
+        "thread": 2,
+        "value": 1
       },
       {
         "rule": 21,
         "tier": 2,
-        "constraint": 12,
-        "thread": 4,
+        "constraint": 14,
+        "thread": 1,
+        "value": 1
+      },
+      {
+        "rule": 16,
+        "tier": 1,
+        "constraint": 5,
+        "thread": 6,
         "value": 1
       },
       {
         "rule": 13,
         "tier": 1,
-        "constraint": 0,
+        "constraint": 11,
+        "thread": 8,
+        "value": 0
+      },
+      {
+        "rule": 15,
+        "tier": 1,
+        "constraint": 6,
+        "thread": 3,
+        "value": 1
+      },
+      {
+        "rule": 21,
+        "tier": 2,
+        "constraint": 16,
         "thread": 5,
         "value": 0
       },
       {
-        "rule": 16,
+        "rule": 15,
         "tier": 1,
-        "constraint": 2,
-        "thread": 6,
+        "constraint": 4,
+        "thread": 4,
         "value": 1
       }
     ]
   },
   {
     "name": "gen-t4-3",
-    "payload": "fmb1_AAsVk83b6wACAgcKBAICBwQCCQICAgEHBAIIAQECBAIBAgUHBQIDAQMCAAUEAgYJAwIFAQUCCQMBAgoEAQIHAwQCAQkDAgYFAwIHCAgEBggHAAMGBAgGBwADBwQGAgkHAwABBAF6WHMf",
-    "threadCount": 11,
-    "certificate": "6eae9548c10ea9478d658e1933050e8117446b323175036672f250b563966265",
+    "payload": "fmb1_AAoUicagMAAEAggJAQIDCAMCBgkDAgEGBAIFAwUCAgkCAgAIAwIHBgECBAcCAgcDAQIBBwMCAwQFAgQBAQIGAAECAQMBAgcJBgQCBQcBAwYFBgAFCQQCBgQABAgCAgABBQFdtVGx",
+    "threadCount": 10,
+    "certificate": "08501887a9bf63f0bafc202cb865caf6cf8be74d7c12d8a8a6727b1025b0f2e5",
     "trace": [
       {
         "rule": 0,
         "tier": 0,
-        "constraint": 20,
-        "thread": 4,
-        "value": 1
-      },
-      {
-        "rule": 11,
-        "tier": 1,
-        "constraint": 5,
-        "thread": 2,
+        "constraint": 19,
+        "thread": 5,
         "value": 1
       },
       {
@@ -1821,219 +1814,20 @@
         "tier": 4,
         "constraint": -1,
         "thread": 0,
-        "value": 1
-      },
-      {
-        "rule": 14,
-        "tier": 1,
-        "constraint": 8,
-        "thread": 5,
-        "value": 0
-      },
-      {
-        "rule": 41,
-        "tier": 4,
-        "constraint": -1,
-        "thread": 1,
-        "value": 1
-      },
-      {
-        "rule": 13,
-        "tier": 1,
-        "constraint": 3,
-        "thread": 7,
         "value": 0
       },
       {
         "rule": 13,
         "tier": 1,
-        "constraint": 0,
-        "thread": 10,
-        "value": 1
-      },
-      {
-        "rule": 16,
-        "tier": 1,
-        "constraint": 7,
-        "thread": 3,
-        "value": 1
-      },
-      {
-        "rule": 16,
-        "tier": 1,
-        "constraint": 11,
-        "thread": 9,
-        "value": 1
-      },
-      {
-        "rule": 22,
-        "tier": 2,
-        "constraint": 17,
-        "thread": 6,
-        "value": 1
-      },
-      {
-        "rule": 22,
-        "tier": 2,
-        "constraint": 17,
+        "constraint": 6,
         "thread": 8,
         "value": 1
-      }
-    ]
-  },
-  {
-    "name": "gen-t4-4",
-    "payload": "fmb1_AAoUyyQ37gABAgYDBAIJAwECAQMCAgIBAgIFAwECCAMBAgABAwIHBgICBAcEAgEHAgIBBgQCCAEBAgIAAQIABgUCBAgDAgMCBwUDAAYCCQEGBAAIBwIBBgQCCAQHAgABAwFc3agz",
-    "threadCount": 10,
-    "certificate": "09e7f8decaf9125277b605a740f034d8d8a2ef830c946bf27a37a54de9d6a08b",
-    "trace": [
-      {
-        "rule": 0,
-        "tier": 0,
-        "constraint": 19,
-        "thread": 3,
-        "value": 1
-      },
-      {
-        "rule": 13,
-        "tier": 1,
-        "constraint": 4,
-        "thread": 5,
-        "value": 0
-      },
-      {
-        "rule": 14,
-        "tier": 1,
-        "constraint": 15,
-        "thread": 2,
-        "value": 0
-      },
-      {
-        "rule": 13,
-        "tier": 1,
-        "constraint": 3,
-        "thread": 1,
-        "value": 1
-      },
-      {
-        "rule": 13,
-        "tier": 1,
-        "constraint": 10,
-        "thread": 6,
-        "value": 0
       },
       {
         "rule": 12,
         "tier": 1,
         "constraint": 13,
-        "thread": 0,
-        "value": 0
-      },
-      {
-        "rule": 22,
-        "tier": 2,
-        "constraint": 16,
-        "thread": 9,
-        "value": 0
-      },
-      {
-        "rule": 41,
-        "tier": 4,
-        "constraint": -1,
-        "thread": 4,
-        "value": 1
-      },
-      {
-        "rule": 13,
-        "tier": 1,
-        "constraint": 8,
-        "thread": 7,
-        "value": 0
-      },
-      {
-        "rule": 16,
-        "tier": 1,
-        "constraint": 14,
-        "thread": 8,
-        "value": 1
-      }
-    ]
-  },
-  {
-    "name": "gen-t4-5",
-    "payload": "fmb1_AAgQU1g24wACAgcBAQIBBgECAQADAgIBAgIFAAMCBAUBAgMAAwIEAgUCBgcBAgMFBQIGAgUCAwQGBQcCBgMBAwcDBAYAAgcDBQACAgABBQB_CwcF",
-    "threadCount": 8,
-    "certificate": "3816b68aff11d313368b306ec89db1475f3fc605e402dbb39c737613b07187ef",
-    "trace": [
-      {
-        "rule": 0,
-        "tier": 0,
-        "constraint": 15,
-        "thread": 5,
-        "value": 0
-      },
-      {
-        "rule": 13,
-        "tier": 1,
-        "constraint": 4,
-        "thread": 0,
-        "value": 1
-      },
-      {
-        "rule": 12,
-        "tier": 1,
-        "constraint": 9,
-        "thread": 3,
-        "value": 0
-      },
-      {
-        "rule": 16,
-        "tier": 1,
-        "constraint": 11,
-        "thread": 4,
-        "value": 0
-      },
-      {
-        "rule": 41,
-        "tier": 4,
-        "constraint": -1,
-        "thread": 1,
-        "value": 0
-      },
-      {
-        "rule": 13,
-        "tier": 1,
-        "constraint": 0,
-        "thread": 7,
-        "value": 1
-      },
-      {
-        "rule": 16,
-        "tier": 1,
-        "constraint": 8,
         "thread": 6,
-        "value": 1
-      },
-      {
-        "rule": 16,
-        "tier": 1,
-        "constraint": 10,
-        "thread": 2,
-        "value": 1
-      }
-    ]
-  },
-  {
-    "name": "gen-t4-6",
-    "payload": "fmb1_AAoU6BG4cgABAggDBAIGCAECBwMBAgIHAwIEBwQCAQQDAgUHBAIABAQCCQcDAgUBAwIAAgQCAQYCAggHAQIACQECAwQDAgUCCAUECAkFBwMHBAUECAACBgMGAQICAAEFAAjzPSM",
-    "threadCount": 10,
-    "certificate": "0a6a5573b11759fb32d1ded8cf19e37a0f782c372b7565802294453f3a9cd537",
-    "trace": [
-      {
-        "rule": 0,
-        "tier": 0,
-        "constraint": 19,
-        "thread": 5,
         "value": 0
       },
       {
@@ -2041,71 +1835,50 @@
         "tier": 4,
         "constraint": -1,
         "thread": 1,
-        "value": 1
+        "value": 0
       },
       {
-        "rule": 41,
-        "tier": 4,
-        "constraint": -1,
-        "thread": 2,
+        "rule": 16,
+        "tier": 1,
+        "constraint": 12,
+        "thread": 4,
         "value": 0
       },
       {
         "rule": 21,
         "tier": 2,
-        "constraint": 18,
-        "thread": 6,
+        "constraint": 16,
+        "thread": 2,
         "value": 1
       },
       {
-        "rule": 41,
-        "tier": 4,
-        "constraint": -1,
-        "thread": 3,
-        "value": 1
-      },
-      {
-        "rule": 11,
+        "rule": 16,
         "tier": 1,
-        "constraint": 14,
-        "thread": 4,
-        "value": 1
-      },
-      {
-        "rule": 14,
-        "tier": 1,
-        "constraint": 4,
-        "thread": 7,
-        "value": 0
-      },
-      {
-        "rule": 15,
-        "tier": 1,
-        "constraint": 8,
+        "constraint": 5,
         "thread": 9,
+        "value": 1
+      },
+      {
+        "rule": 21,
+        "tier": 2,
+        "constraint": 16,
+        "thread": 7,
         "value": 1
       },
       {
         "rule": 13,
         "tier": 1,
-        "constraint": 12,
-        "thread": 8,
-        "value": 1
-      },
-      {
-        "rule": 22,
-        "tier": 2,
-        "constraint": 17,
-        "thread": 0,
+        "constraint": 9,
+        "thread": 3,
         "value": 0
       }
     ]
   },
   {
-    "name": "gen-t4-7",
-    "payload": "fmb1_AAwW7rF6lgADAgMEAwILBAUCCQsBAgcDAQIACQMCBQMEAgIAAQIKAwMCBgkDAgEFAwIICgQCAQIDAgoLBAIAAQMCBgoDAgsCAgIGBwMCCQIDAgkIBgMIBwkCCAQKAgYIAgABBwH6Q9T3",
-    "threadCount": 12,
-    "certificate": "84519b117b02bd96c355d903155be494d99e9030ac4d0c7192427925761702dc",
+    "name": "gen-t4-4",
+    "payload": "fmb1_AAsWSzzEHAABAgoFBQIICgECAAoDAgEFAQIDAQMCBAUEAgIKBAIJBQQCBgUEAgcEAwIDBgQCAAUDAgoEAQIGAQQCCQAEAgAHBAIDCQQCBwUGBAgGAAUDBgQHAQkGAggDBAIAAgABBwFKbgNR",
+    "threadCount": 11,
+    "certificate": "fd610ecf529c728e8789e5c58b4d81a3a1a925bda37498b9411093595155a15f",
     "trace": [
       {
         "rule": 0,
@@ -2115,31 +1888,152 @@
         "value": 1
       },
       {
+        "rule": 41,
+        "tier": 4,
+        "constraint": -1,
+        "thread": 0,
+        "value": 1
+      },
+      {
         "rule": 11,
         "tier": 1,
-        "constraint": 3,
-        "thread": 3,
+        "constraint": 2,
+        "thread": 10,
+        "value": 1
+      },
+      {
+        "rule": 11,
+        "tier": 1,
+        "constraint": 0,
+        "thread": 5,
+        "value": 1
+      },
+      {
+        "rule": 16,
+        "tier": 1,
+        "constraint": 1,
+        "thread": 8,
         "value": 1
       },
       {
         "rule": 14,
         "tier": 1,
-        "constraint": 0,
-        "thread": 4,
+        "constraint": 3,
+        "thread": 1,
+        "value": 0
+      },
+      {
+        "rule": 12,
+        "tier": 1,
+        "constraint": 4,
+        "thread": 3,
         "value": 0
       },
       {
         "rule": 14,
         "tier": 1,
         "constraint": 5,
-        "thread": 5,
+        "thread": 4,
         "value": 0
+      },
+      {
+        "rule": 12,
+        "tier": 1,
+        "constraint": 13,
+        "thread": 6,
+        "value": 0
+      },
+      {
+        "rule": 15,
+        "tier": 1,
+        "constraint": 16,
+        "thread": 9,
+        "value": 1
+      },
+      {
+        "rule": 22,
+        "tier": 2,
+        "constraint": 20,
+        "thread": 2,
+        "value": 1
+      }
+    ]
+  },
+  {
+    "name": "gen-t4-5",
+    "payload": "fmb1_AAgRBDNtWQABAgUBBAIAAQECBwEEAgIBAwIGBwUCAwEEAgQBAwICBwICAgMFAgUAAQIGAgQCAgQDAgACBwMEBwECBgUFBwMCAAMGAwEGBwEAAQQBkw2xjQ",
+    "threadCount": 8,
+    "certificate": "cb24d9745ee8394fb3cfbe5de50ae8817d0f123d80298927f478d0248a297f7d",
+    "trace": [
+      {
+        "rule": 0,
+        "tier": 0,
+        "constraint": 16,
+        "thread": 4,
+        "value": 1
+      },
+      {
+        "rule": 41,
+        "tier": 4,
+        "constraint": -1,
+        "thread": 0,
+        "value": 1
+      },
+      {
+        "rule": 16,
+        "tier": 1,
+        "constraint": 9,
+        "thread": 5,
+        "value": 1
+      },
+      {
+        "rule": 11,
+        "tier": 1,
+        "constraint": 0,
+        "thread": 1,
+        "value": 1
+      },
+      {
+        "rule": 16,
+        "tier": 1,
+        "constraint": 5,
+        "thread": 3,
+        "value": 1
       },
       {
         "rule": 13,
         "tier": 1,
-        "constraint": 16,
+        "constraint": 8,
+        "thread": 2,
+        "value": 0
+      },
+      {
+        "rule": 12,
+        "tier": 1,
+        "constraint": 10,
         "thread": 6,
+        "value": 0
+      },
+      {
+        "rule": 22,
+        "tier": 2,
+        "constraint": 13,
+        "thread": 7,
+        "value": 0
+      }
+    ]
+  },
+  {
+    "name": "gen-t4-6",
+    "payload": "fmb1_AAoVqJIReQAEAgkBAQIFAQECBAEEAgIJBQIHAQECAwEDAgAEAQIACAECAAYBAgIIAQIBBgMCBgcBAgUDAQIACQMCCQQDAgYEBgQCCAMGAwcFAQADCQICCAUJAQcAAwEGAwEIBQEAAQUAXJcKdQ",
+    "threadCount": 10,
+    "certificate": "886864dc7168fd57bcb682ae34909b2409ce980c180f90273c0203231a92a97c",
+    "trace": [
+      {
+        "rule": 0,
+        "tier": 0,
+        "constraint": 20,
+        "thread": 5,
         "value": 0
       },
       {
@@ -2150,24 +2044,109 @@
         "value": 0
       },
       {
-        "rule": 15,
-        "tier": 1,
-        "constraint": 6,
-        "thread": 2,
-        "value": 1
+        "rule": 41,
+        "tier": 4,
+        "constraint": -1,
+        "thread": 1,
+        "value": 0
       },
       {
         "rule": 15,
         "tier": 1,
-        "constraint": 13,
-        "thread": 1,
+        "constraint": 0,
+        "thread": 9,
+        "value": 1
+      },
+      {
+        "rule": 12,
+        "tier": 1,
+        "constraint": 2,
+        "thread": 4,
+        "value": 0
+      },
+      {
+        "rule": 16,
+        "tier": 1,
+        "constraint": 4,
+        "thread": 7,
+        "value": 0
+      },
+      {
+        "rule": 12,
+        "tier": 1,
+        "constraint": 5,
+        "thread": 3,
+        "value": 0
+      },
+      {
+        "rule": 21,
+        "tier": 2,
+        "constraint": 16,
+        "thread": 2,
+        "value": 1
+      },
+      {
+        "rule": 11,
+        "tier": 1,
+        "constraint": 9,
+        "thread": 8,
+        "value": 1
+      },
+      {
+        "rule": 21,
+        "tier": 2,
+        "constraint": 16,
+        "thread": 6,
+        "value": 1
+      }
+    ]
+  },
+  {
+    "name": "gen-t4-7",
+    "payload": "fmb1_AAsXbFqEsQAFAgEJBAIDCQUCBgkDAgoGBAIIAQECBAMBAgcEAQICBgQCAAoBAgUBAwIDBgMCBQADAggHBAIACAMCBAADAgQIBAIJCgMCBAEGBAgDBwQCBgMDBgEBBgQIBAYAAgYECAkEAAIAAQcABrUhFw",
+    "threadCount": 11,
+    "certificate": "619c00390563f3e30e751ca0dcf89462afa1545a19928f86a6d293fc1615d4b4",
+    "trace": [
+      {
+        "rule": 0,
+        "tier": 0,
+        "constraint": 22,
+        "thread": 7,
+        "value": 0
+      },
+      {
+        "rule": 41,
+        "tier": 4,
+        "constraint": -1,
+        "thread": 0,
         "value": 1
       },
       {
         "rule": 14,
         "tier": 1,
-        "constraint": 15,
-        "thread": 11,
+        "constraint": 11,
+        "thread": 5,
+        "value": 0
+      },
+      {
+        "rule": 14,
+        "tier": 1,
+        "constraint": 14,
+        "thread": 4,
+        "value": 0
+      },
+      {
+        "rule": 21,
+        "tier": 2,
+        "constraint": 18,
+        "thread": 3,
+        "value": 1
+      },
+      {
+        "rule": 14,
+        "tier": 1,
+        "constraint": 10,
+        "thread": 6,
         "value": 0
       },
       {
@@ -2178,81 +2157,109 @@
         "value": 0
       },
       {
-        "rule": 21,
-        "tier": 2,
-        "constraint": 19,
+        "rule": 16,
+        "tier": 1,
+        "constraint": 0,
+        "thread": 1,
+        "value": 0
+      },
+      {
+        "rule": 15,
+        "tier": 1,
+        "constraint": 4,
         "thread": 8,
         "value": 1
       },
       {
-        "rule": 14,
+        "rule": 12,
         "tier": 1,
-        "constraint": 10,
-        "thread": 10,
+        "constraint": 7,
+        "thread": 2,
         "value": 0
+      },
+      {
+        "rule": 15,
+        "tier": 1,
+        "constraint": 16,
+        "thread": 10,
+        "value": 1
       }
     ]
   },
   {
     "name": "gen-t4-8",
-    "payload": "fmb1_AAgPB1snhwAEAgYFAQIDBgQCAQUDAgQDAgICBAQCBwYBAgACAgIFAwQCBAYEAgYBBAIHBAICBgIGBAACBwQCBgUCBAYBBQMAAQUBcpxdZQ",
-    "threadCount": 8,
-    "certificate": "af94a75fd05bace58b94c12a9ecf003fb38cd3481d3b59e092d37ea1d6e117a1",
+    "payload": "fmb1_AAoV0wwzxAABAgQAAQIEBgQCAwYFAggAAwIJAAMCBwYEAgUDBAIBBAICAgMDAgkFAwIIBwECCQMEAgIABQIBBgMCBwUBAgcDBgUJBgQDAQMGBAYJAwUCBgQBCAMCAwYDCAAEAgABBgHTzvnd",
+    "threadCount": 10,
+    "certificate": "fb18654922bd388e5b94391c7a8ab49838b9276fd904b3c6a49f1b7b04a9ef24",
     "trace": [
       {
         "rule": 0,
         "tier": 0,
-        "constraint": 14,
-        "thread": 5,
+        "constraint": 20,
+        "thread": 6,
         "value": 1
       },
       {
-        "rule": 13,
+        "rule": 14,
         "tier": 1,
-        "constraint": 7,
-        "thread": 3,
+        "constraint": 5,
+        "thread": 7,
         "value": 0
+      },
+      {
+        "rule": 16,
+        "tier": 1,
+        "constraint": 13,
+        "thread": 1,
+        "value": 1
       },
       {
         "rule": 41,
         "tier": 4,
         "constraint": -1,
         "thread": 0,
+        "value": 1
+      },
+      {
+        "rule": 16,
+        "tier": 1,
+        "constraint": 3,
+        "thread": 8,
+        "value": 1
+      },
+      {
+        "rule": 14,
+        "tier": 1,
+        "constraint": 4,
+        "thread": 9,
         "value": 0
       },
       {
-        "rule": 41,
-        "tier": 4,
-        "constraint": -1,
+        "rule": 21,
+        "tier": 2,
+        "constraint": 19,
+        "thread": 4,
+        "value": 0
+      },
+      {
+        "rule": 21,
+        "tier": 2,
+        "constraint": 16,
+        "thread": 3,
+        "value": 1
+      },
+      {
+        "rule": 13,
+        "tier": 1,
+        "constraint": 8,
         "thread": 2,
         "value": 0
       },
       {
-        "rule": 13,
-        "tier": 1,
-        "constraint": 4,
-        "thread": 4,
-        "value": 1
-      },
-      {
-        "rule": 13,
-        "tier": 1,
-        "constraint": 11,
-        "thread": 6,
-        "value": 1
-      },
-      {
         "rule": 21,
         "tier": 2,
-        "constraint": 12,
-        "thread": 7,
-        "value": 1
-      },
-      {
-        "rule": 21,
-        "tier": 2,
-        "constraint": 13,
-        "thread": 1,
+        "constraint": 17,
+        "thread": 5,
         "value": 0
       }
     ]

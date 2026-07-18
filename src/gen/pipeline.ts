@@ -57,42 +57,60 @@ export interface BatchReport {
   bands: BandReport[];
   totalPuzzles: number;
   totalMs: number;
+  p95Ms: number; // per-puzzle gen+verify p95 (§GENERATOR 6 budget: <50ms)
   uniquenessPass: boolean;
   deducibilityPass: boolean;
   zeroR5: boolean;
   acceptancePass: boolean;
-  allBandsPopulated: boolean;
+  allBandsPopulated: boolean; // by SCALAR band, not target tier
   wireRoundTripPass: boolean;
+  perfPass: boolean;
+}
+
+export interface VerifyResult {
+  roundTrip: boolean; // encode(decode(x)) byte-identical
+  unique: boolean; // exactly one model (independent DPLL re-count)
+  deducible: boolean; // re-solves at its target tier
+  certMatch: boolean; // re-solve reproduces the stored certificate
+  solutionMatch: boolean; // the model equals the stored solution bitmask
+  needsR5: boolean; // re-solve stalled below ceiling (would require R5)
+  ok: boolean;
 }
 
 /**
- * Independently re-verify an emitted puzzle: wire round-trip byte-identity,
- * uniqueness, and a re-solve whose certificate matches. This is the check the
- * CLI `verify` command runs; the batch runs it on every accepted puzzle.
+ * Independently re-verify an emitted puzzle across each gate dimension SEPARATELY
+ * so a failure can be localized (a wire regression must not read as "uniqueness
+ * fail"). This is the check `fumbo verify` and the batch both run.
  */
-export function verifyPuzzle(puzzle: Puzzle, certificate: string, tier: TargetTier): boolean {
+export function verifyPuzzle(puzzle: Puzzle, certificate: string, tier: TargetTier): VerifyResult {
   const s1 = encodePuzzle({ threadCount: puzzle.threads.length, layoutSeed: puzzle.layoutSeed, constraints: puzzle.constraints, solution: puzzle.solution }, { includeSolution: true });
   const dec = decodePuzzle(s1);
   const s2 = encodePuzzle(dec, { includeSolution: true });
-  if (s1 !== s2) return false;
-  if (!isUnique(dec.threadCount, dec.constraints)) return false;
+  const roundTrip = s1 === s2;
+  const unique = isUnique(dec.threadCount, dec.constraints);
   const re = solve(dec.threadCount, dec.constraints, { tierCeiling: tier });
-  if (!re.solved || re.certificate !== certificate) return false;
-  // solution must match the model
-  const threads = threadsOf(dec.threadCount);
-  for (const t of threads) {
+  const deducible = re.solved;
+  const needsR5 = !re.solved && re.needsDeeper;
+  const certMatch = re.certificate === certificate;
+  let solutionMatch = re.solved;
+  for (const t of threadsOf(dec.threadCount)) {
     const bit = Number((puzzle.solution >> BigInt(t.id)) & 1n);
-    if (re.value[t.id] !== bit) return false;
+    if (re.value[t.id] !== bit) solutionMatch = false;
   }
-  return true;
+  const ok = roundTrip && unique && deducible && certMatch && solutionMatch && !needsR5;
+  return { roundTrip, unique, deducible, certMatch, solutionMatch, needsR5, ok };
 }
 
 export function runBatch(perBand: number, baseSeed: number): BatchReport {
   const startMs = performanceNow();
   const bands: BandReport[] = [];
+  // Independent gate flags — each set only by its own failing check.
   let zeroR5 = true;
   let deducibilityPass = true;
   let wireRoundTripPass = true;
+  let uniquenessPass = true;
+  const durations: number[] = []; // per-puzzle gen+verify wall time
+  const scalarBandTotals: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0 };
 
   for (const tier of [1, 2, 3, 4] as TargetTier[]) {
     const req = LADDER[tier];
@@ -105,22 +123,28 @@ export function runBatch(perBand: number, baseSeed: number): BatchReport {
 
     let bandSeed = mixSeed(baseSeed, tier * 1_000_003);
     while (accepted < perBand) {
+      const t0 = performanceNow();
       const r = generate(req, bandSeed, 6000);
-      totalAttempts += r.attempts;
       if (!r.ok) {
         for (const [k, v] of Object.entries(r.reasons)) rejectReasons[k] = (rejectReasons[k] ?? 0) + v;
+        totalAttempts += r.attempts;
         break; // could not fill the band within the attempt budget
       }
-      // Fold rejects observed on the way to this acceptance into totals.
+      totalAttempts += r.attempts;
       accepted++;
+      const v = verifyPuzzle(r.puzzle, r.certificate, tier);
+      durations.push(performanceNow() - t0);
+
+      const band = r.puzzle.difficulty.scalar < 3 ? 1 : r.puzzle.difficulty.scalar < 6 ? 2 : r.puzzle.difficulty.scalar < 10 ? 3 : 4;
       scalars.push(r.puzzle.difficulty.scalar);
-      bandHistogram[r.puzzle.difficulty.scalar < 3 ? 1 : r.puzzle.difficulty.scalar < 6 ? 2 : r.puzzle.difficulty.scalar < 10 ? 3 : 4]!++;
-      if (!verifyPuzzle(r.puzzle, r.certificate, tier)) {
-        verifyFailures++;
-        deducibilityPass = false;
-        wireRoundTripPass = false;
-      }
-      if (r.puzzle.difficulty.hypoCount > 0 && tier !== 4) zeroR5 = false; // sanity
+      bandHistogram[band]!++;
+      scalarBandTotals[band]!++;
+
+      if (!v.roundTrip) wireRoundTripPass = false;
+      if (!v.unique) uniquenessPass = false;
+      if (!v.deducible || !v.certMatch || !v.solutionMatch) deducibilityPass = false;
+      if (v.needsR5) zeroR5 = false;
+      if (!v.ok) verifyFailures++;
       bandSeed = mixSeed(bandSeed, r.attempts + 7);
     }
 
@@ -142,19 +166,25 @@ export function runBatch(perBand: number, baseSeed: number): BatchReport {
 
   const totalPuzzles = bands.reduce((a, b) => a + b.accepted, 0);
   const acceptancePass = bands.every((b) => b.acceptanceRate >= 0.05);
-  const allBandsPopulated = bands.every((b) => b.accepted > 0);
-  const uniquenessPass = bands.every((b) => b.verifyFailures === 0);
+  // populated by SCALAR band (what TESTING §2 actually asks), not target tier
+  const allBandsPopulated = [1, 2, 3, 4].every((b) => scalarBandTotals[b]! > 0);
+  const totalMs = Math.round(performanceNow() - startMs);
+  durations.sort((a, b) => a - b);
+  const p95Ms = durations.length ? round(durations[Math.min(durations.length - 1, Math.floor(durations.length * 0.95))]!) : 0;
+  const perfPass = totalMs < 60_000 && p95Ms < 50;
 
   return {
     bands,
     totalPuzzles,
-    totalMs: Math.round(performanceNow() - startMs),
+    totalMs,
+    p95Ms,
     uniquenessPass,
     deducibilityPass,
     zeroR5,
     acceptancePass,
     allBandsPopulated,
     wireRoundTripPass,
+    perfPass,
   };
 }
 
