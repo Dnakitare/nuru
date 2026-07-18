@@ -5,7 +5,7 @@
 // "track solve time" concept the game session will own later.
 
 import { CType, isCountType, puzzleDigest, type Constraint, type WirePuzzle } from "../core/index.js";
-import { firstViolated, solve } from "../solver/index.js";
+import { firstViolated, Rule, solve } from "../solver/index.js";
 import { generate, LADDER, type TargetTier } from "../gen/index.js";
 import { layout, type Pt } from "./layout.js";
 import { sigilSvg } from "./sigil.js";
@@ -40,7 +40,10 @@ function buildTierButtons(): void {
     const b = document.createElement("button");
     b.textContent = names[t];
     b.setAttribute("aria-pressed", String(state?.tier === t));
-    b.addEventListener("click", () => newKnot(t));
+    b.addEventListener("click", () => {
+      stopDemo();
+      newKnot(t);
+    });
     host.appendChild(b);
   }
 }
@@ -171,25 +174,31 @@ function render(): void {
     const ring = kind === "derived" ? `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rOuter + 4}" fill="none" stroke="${col}" stroke-width="1" opacity="0.4"/>` : "";
     const cx = p.x.toFixed(1);
     const cy = p.y.toFixed(1);
-    let shape: string;
+    let shape = "";
+    let anchorCaption = "";
     if (kind === "anchor") {
       const x = (p.x - rOuter).toFixed(1);
       const y = (p.y - rOuter).toFixed(1);
       const d = (rOuter * 2).toFixed(1);
-      // true anchor: filled+taut; false anchor: hollow outline (slack, pinned).
+      // true anchor: filled bright amber + glow (taut). false anchor: dim "off"
+      // fill with an amber outline (slack, pinned) — clearly filled-but-off, not
+      // an empty node.
       shape =
         value === 1
-          ? `<rect x="${x}" y="${y}" width="${d}" height="${d}" rx="3" fill="var(--anchor)" opacity="0.95"/>`
-          : `<rect x="${x}" y="${y}" width="${d}" height="${d}" rx="3" fill="var(--field)" stroke="var(--anchor)" stroke-width="2" opacity="0.85"/>`;
+          ? `<rect x="${x}" y="${y}" width="${d}" height="${d}" rx="3" fill="var(--anchor)" opacity="0.96"/>`
+          : `<rect x="${x}" y="${y}" width="${d}" height="${d}" rx="3" fill="#241d0f" stroke="var(--anchor)" stroke-width="2" opacity="0.9"/>`;
+      // explicit state caption below every anchor — removes all ambiguity
+      const capY = (p.y + rOuter + 14).toFixed(1);
+      anchorCaption = `<text x="${cx}" y="${capY}" text-anchor="middle" font-family="var(--mono)" font-size="10" letter-spacing="0.1em" fill="var(--anchor)" opacity="${value === 1 ? 0.95 : 0.72}" pointer-events="none">given ${value === 1 ? "true" : "false"}</text>`;
     } else {
       shape = `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="${col}" opacity="${isTrue ? 0.95 : kind === "unknown" ? 0.55 : 0.8}"/>`;
     }
     const strainRing = strained ? `<circle cx="${cx}" cy="${cy}" r="${rOuter + 7}" fill="none" stroke="var(--strain)" stroke-width="1.5" opacity="0.8"/>` : "";
-    const labelDark = value === 1; // dark ink only on bright fills
-    const labelCol = labelDark ? "#0a0e14" : kind === "anchor" ? "var(--anchor)" : "var(--ink-dim)";
+    // dark ink on the bright true-anchor fill; amber on the dim false-anchor fill
+    const labelCol = value === 1 ? "#0a0e14" : kind === "anchor" ? "var(--anchor)" : "var(--ink-dim)";
     const label = `<text x="${cx}" y="${(p.y + 4).toFixed(1)}" text-anchor="middle" font-family="var(--mono)" font-size="11" fill="${labelCol}" pointer-events="none">${i}</text>`;
     orbs.push(
-      `<g class="thread" data-i="${i}" style="cursor:${clickable ? "pointer" : "default"}">${halo}${ring}${strainRing}${shape}${label}</g>`,
+      `<g class="thread" data-i="${i}" style="cursor:${clickable ? "pointer" : "default"}">${halo}${ring}${strainRing}${shape}${label}${anchorCaption}</g>`,
     );
   }
 
@@ -204,6 +213,7 @@ function render(): void {
 }
 
 function onThreadClick(i: number): void {
+  stopDemo();
   const s = state;
   if (!s || s.solveMs !== null) return;
   if (s.anchors.has(i)) return; // anchors are given, not interactive
@@ -265,6 +275,7 @@ function renderStatus(s: State, ev: Eval): void {
 // ── hint / reveal / solve ────────────────────────────────────────────────────
 
 function doHint(): void {
+  stopDemo();
   const s = state;
   if (!s || s.solveMs !== null) return;
   const r = solve(s.wp.threadCount, s.wp.constraints, { tierCeiling: 4, initial: s.committed });
@@ -277,11 +288,75 @@ function doHint(): void {
 }
 
 function doReveal(): void {
+  stopDemo();
   const s = state;
   if (!s) return;
   for (let i = 0; i < s.wp.threadCount; i++) s.committed[i] = Number((s.solution >> BigInt(i)) & 1n) as 0 | 1;
   s.hintConstraint = null;
   render();
+}
+
+// ── guided solve demo ────────────────────────────────────────────────────────
+// Replays the solver's canonical trace one inference at a time — highlight the
+// reason (the crossing), then settle the forced thread — so a first-time viewer
+// learns the verb: rules force threads, threads cascade, the knot collapses.
+
+let demoToken = 0;
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+function stopDemo(): void {
+  demoToken++;
+  $("demoBar").classList.remove("show");
+}
+
+function narrate(step: { rule: number; constraint: number; thread: number; value: number }, cs: readonly Constraint[]): string {
+  const t = `#${step.thread}`;
+  const v = step.value === 1 ? "taut (true)" : "slack (false)";
+  if (step.constraint === -1) {
+    return `<span class="lead">a test:</span> assuming ${t} the other way forces a contradiction &mdash; so ${t} goes ${v}`;
+  }
+  return `<span class="lead">${phrase(cs[step.constraint]!)}</span> &rArr; ${t} goes ${v}`;
+}
+
+async function runDemo(fresh: boolean): Promise<void> {
+  const my = ++demoToken;
+  if (fresh || !state) newKnot(state?.tier ?? 2);
+  const s = state;
+  if (!s) return;
+  // reset to the givens only, then replay from the top
+  for (let i = 0; i < s.wp.threadCount; i++) if (!s.anchors.has(i)) s.committed[i] = U;
+  s.solveMs = null;
+  s.startMs = performance.now();
+  s.hintConstraint = null;
+  $("sigilPanel").classList.remove("show");
+  ($("timer") as HTMLElement).classList.remove("solved");
+  $("timerSub").textContent = "watching";
+  render();
+
+  const full = solve(s.wp.threadCount, s.wp.constraints, { tierCeiling: 4 });
+  const steps = full.trace.filter((st) => st.rule !== Rule.R0); // givens are already lit
+  const bar = $("demoBar");
+  bar.classList.add("show");
+  bar.innerHTML = `<span class="lead">the givens are pinned.</span> each rule below forces one more thread.`;
+  await sleep(1400);
+  if (my !== demoToken) return;
+
+  for (const st of steps) {
+    // 1. point at the reason
+    s.hintConstraint = st.constraint;
+    render();
+    bar.innerHTML = narrate(st, s.wp.constraints);
+    await sleep(820);
+    if (my !== demoToken) return;
+    // 2. settle the forced thread
+    s.committed[st.thread] = st.value as 0 | 1;
+    s.hintConstraint = null;
+    render();
+    await sleep(430);
+    if (my !== demoToken) return;
+  }
+  bar.classList.remove("show");
+  // render() during the final step already triggered the collapse-to-sigil
 }
 
 function onSolved(s: State): void {
@@ -335,9 +410,23 @@ function tick(): void {
 
 // ── boot ─────────────────────────────────────────────────────────────────────
 
-$("btnNew").addEventListener("click", () => newKnot(state?.tier ?? 2));
+$("btnNew").addEventListener("click", () => {
+  stopDemo();
+  newKnot(state?.tier ?? 2);
+});
+$("btnDemo").addEventListener("click", () => void runDemo(true));
 $("btnHint").addEventListener("click", doHint);
 $("btnReveal").addEventListener("click", doReveal);
+
 buildTierButtons();
 newKnot(2);
+// First-ever visit: auto-play one solve so the concept lands before you touch it.
+let seenDemo = false;
+try {
+  seenDemo = localStorage.getItem("fmb_seen_demo") === "1";
+  localStorage.setItem("fmb_seen_demo", "1");
+} catch {
+  /* storage disabled */
+}
+if (!seenDemo) void runDemo(false);
 requestAnimationFrame(tick);

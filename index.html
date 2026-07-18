@@ -58,6 +58,17 @@
         font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
         color: var(--ink-faint); max-width: 60%;
       }
+      .demo-bar {
+        position: absolute; bottom: 46px; left: 50%; transform: translateX(-50%) translateY(8px);
+        z-index: 5; opacity: 0; pointer-events: none;
+        background: rgba(12, 18, 26, 0.92); border: 1px solid var(--line);
+        border-left: 2px solid var(--anchor);
+        padding: 11px 18px; border-radius: 4px; max-width: 78%;
+        font-family: var(--mono); font-size: 13px; letter-spacing: 0.02em; color: var(--ink);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+      }
+      .demo-bar.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+      .demo-bar .lead { color: var(--anchor); }
 
       /* right rail */
       .rail { background: var(--raised); display: flex; flex-direction: column; min-height: 0; }
@@ -125,6 +136,7 @@
         <div class="brand"><b>fumbo</b> · knot inspector</div>
         <svg id="knot" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" aria-label="constraint knot"></svg>
         <div class="stage-note" id="note">pull a thread taut (true) or let it fall slack (false). the knot strains where a claim collides.</div>
+        <div class="demo-bar" id="demoBar" aria-live="polite"></div>
         <div class="sigil-panel" id="sigilPanel">
           <svg id="sigil" viewBox="-1.2 -1.2 2.4 2.4" width="380" height="380" aria-label="solved sigil"></svg>
           <div class="caption"><span class="big" id="sigilTime"></span><span id="sigilSig"></span></div>
@@ -142,6 +154,7 @@
           <div class="tiers" id="tiers"></div>
           <div class="actions" style="margin-top:14px">
             <button class="primary" id="btnNew">new knot</button>
+            <button id="btnDemo">watch a solve</button>
             <button id="btnHint">hint</button>
             <button id="btnReveal">reveal</button>
           </div>
