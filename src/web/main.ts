@@ -9,6 +9,7 @@ import { firstViolated, Rule, solve } from "../solver/index.js";
 import { generate, LADDER, type TargetTier } from "../gen/index.js";
 import { layout, type Pt } from "./layout.js";
 import { sigilSvg } from "./sigil.js";
+import { runWalkthrough, type WalkStep } from "./walkthrough.js";
 
 const U = -1;
 
@@ -417,16 +418,59 @@ $("btnNew").addEventListener("click", () => {
 $("btnDemo").addEventListener("click", () => void runDemo(true));
 $("btnHint").addEventListener("click", doHint);
 $("btnReveal").addEventListener("click", doReveal);
+$("btnGuide").addEventListener("click", startWalkthrough);
+
+const WALK: WalkStep[] = [
+  {
+    title: "fumbo",
+    body: "a knot of claims. every thread is a statement that is either true or false. your job is to work out which, using only the rules.",
+  },
+  {
+    title: "the threads",
+    target: "#knot",
+    body: "each node in the knot is one claim. dim and drifting means undecided, which is most of them to start.",
+  },
+  {
+    title: "the givens",
+    target: "#knot",
+    body: "the amber pinned nodes are handed to you. a filled pin is given true, a hollow one is given false. they are your way in.",
+  },
+  {
+    title: "make a claim",
+    target: "#knot",
+    body: "click a thread to pull it taut (true). click again for slack (false). once more to let it go. trying costs nothing.",
+  },
+  {
+    title: "when claims collide",
+    target: "#knot",
+    body: "assert something inconsistent and the knot strains red at the exact rule that broke. that shows you where, not that you failed.",
+  },
+  {
+    title: "the reasons",
+    target: "#rules",
+    body: "these rules bind the threads together. every step of a solve follows from one of them. nothing here needs a guess.",
+  },
+  {
+    title: "the finish",
+    target: "#timer",
+    body: "resolve every thread with no strain and the knot collapses into a sigil, and your time is kept. stuck along the way? hint points at the next rule to use.",
+  },
+];
+
+function startWalkthrough(): void {
+  stopDemo();
+  runWalkthrough(WALK, { onWatch: () => void runDemo(true) });
+}
 
 buildTierButtons();
 newKnot(2);
-// First-ever visit: auto-play one solve so the concept lands before you touch it.
-let seenDemo = false;
+// First-ever visit: walk through the concept before anything is touched.
+let onboarded = false;
 try {
-  seenDemo = localStorage.getItem("fmb_seen_demo") === "1";
-  localStorage.setItem("fmb_seen_demo", "1");
+  onboarded = localStorage.getItem("fmb_onboarded") === "1";
+  localStorage.setItem("fmb_onboarded", "1");
 } catch {
   /* storage disabled */
 }
-if (!seenDemo) void runDemo(false);
+if (!onboarded) startWalkthrough();
 requestAnimationFrame(tick);
