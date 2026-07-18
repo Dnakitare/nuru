@@ -22,6 +22,9 @@ export function runWalkthrough(steps: WalkStep[], opts: WalkOptions = {}): void 
   let i = 0;
 
   const root = el("div", "wt-root");
+  root.setAttribute("role", "dialog");
+  root.setAttribute("aria-modal", "true");
+  root.setAttribute("aria-label", "how to play");
   const panels = {
     top: el("div", "wt-panel"),
     bottom: el("div", "wt-panel"),
@@ -44,8 +47,22 @@ export function runWalkthrough(steps: WalkStep[], opts: WalkOptions = {}): void 
 
   const onKey = (e: KeyboardEvent): void => {
     if (e.key === "Escape") close();
-    else if (e.key === "ArrowRight" || e.key === "Enter") next();
     else if (e.key === "ArrowLeft") prev();
+    else if (e.key === "ArrowRight") next();
+    else if (e.key === "Tab") {
+      // trap focus inside the card so Tab can't reach the dimmed page behind it
+      const f = card.querySelectorAll<HTMLElement>("button");
+      if (f.length === 0) return;
+      const first = f[0]!;
+      const last = f[f.length - 1]!;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
   };
 
   const next = (): void => {
@@ -86,11 +103,15 @@ export function runWalkthrough(steps: WalkStep[], opts: WalkOptions = {}): void 
     const step = steps[i]!;
     const targetEl = step.target ? document.querySelector(step.target) : null;
     if (targetEl) {
-      const r = targetEl.getBoundingClientRect();
-      const pad = 6;
-      frame(r.left - pad, r.top - pad, r.width + pad * 2, r.height + pad * 2);
       card.classList.remove("center");
       card.classList.add("bottom");
+      // the target may be below the fold on mobile (rail stacks under the stage)
+      targetEl.scrollIntoView({ block: "center", inline: "nearest" });
+      requestAnimationFrame(() => {
+        const r = targetEl.getBoundingClientRect();
+        const pad = 6;
+        frame(r.left - pad, r.top - pad, r.width + pad * 2, r.height + pad * 2);
+      });
     } else {
       fullDim();
       card.classList.remove("bottom");
@@ -132,6 +153,8 @@ export function runWalkthrough(steps: WalkStep[], opts: WalkOptions = {}): void 
       });
     });
     position();
+    // move focus into the dialog so keyboard users start inside it
+    (card.querySelector(".wt-btns button.primary") as HTMLElement | null)?.focus();
   }
 
   window.addEventListener("resize", position);

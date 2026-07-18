@@ -31,7 +31,7 @@ export function sigilSvg(spec: SigilSpec, stroke: string): string {
       const a = (k / N) * Math.PI * 2 - Math.PI / 2;
       pts.push(`${(Math.cos(a) * rad).toFixed(3)},${(Math.sin(a) * rad).toFixed(3)}`);
     }
-    paths.push(`<polygon points="${pts.join(" ")}" fill="none" stroke="${stroke}" stroke-width="${(0.9 / rings).toFixed(3)}" opacity="${(0.35 + 0.5 * (r / rings)).toFixed(2)}"/>`);
+    paths.push(`<polygon points="${pts.join(" ")}" fill="none" stroke="${stroke}" stroke-width="1.3" vector-effect="non-scaling-stroke" opacity="${(0.35 + 0.5 * (r / rings)).toFixed(2)}"/>`);
   }
 
   // Spokes with digest-driven kinks — the "stroke complexity".
@@ -44,7 +44,7 @@ export function sigilSvg(spec: SigilSpec, stroke: string): string {
       const aa = a + wob;
       d += ` L ${(Math.cos(aa) * rad).toFixed(3)} ${(Math.sin(aa) * rad).toFixed(3)}`;
     }
-    paths.push(`<path d="${d}" fill="none" stroke="${stroke}" stroke-width="0.5" opacity="0.8"/>`);
+    paths.push(`<path d="${d}" fill="none" stroke="${stroke}" stroke-width="1" vector-effect="non-scaling-stroke" opacity="0.8"/>`);
   }
 
   // Center node.

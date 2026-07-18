@@ -24,12 +24,26 @@ interface State {
   startMs: number;
   solveMs: number | null;
   hintConstraint: number | null;
+  record: boolean; // false for reveal/demo so phantom "solves" never hit the log
+  revealed: boolean; // solution was revealed, not solved by the player
 }
 
 let state: State | null = null;
 const $ = <T extends Element>(id: string): T => document.getElementById(id) as unknown as T;
 const svg = $<SVGSVGElement>("knot");
-const VB = 600;
+
+// The knot renders in REAL pixel coordinates sized to the SVG box (square, min
+// side, centered), not a fixed 600-unit viewBox. That keeps orb radii and label
+// fonts at consistent, legible px on every screen — a fixed viewBox scaled orbs
+// and text down to ~6px on a phone.
+interface ViewSize { w: number; h: number; side: number; ox: number; oy: number; }
+let VS: ViewSize = { w: 600, h: 600, side: 600, ox: 0, oy: 0 };
+function measureView(): void {
+  const w = svg.clientWidth || 600;
+  const h = svg.clientHeight || 600;
+  const side = Math.min(w, h);
+  VS = { w, h, side, ox: (w - side) / 2, oy: (h - side) / 2 };
+}
 
 // ── setup ────────────────────────────────────────────────────────────────────
 
@@ -55,7 +69,7 @@ function newKnot(tier: TargetTier): void {
   // Rejection sampling can miss within budget for a single seed; retry a few.
   for (let i = 0; !r.ok && i < 5; i++) r = generate(LADDER[tier], (seed + i * 2654435761) >>> 0);
   if (!r.ok) {
-    $("stateNow").textContent = "generation stalled — try again";
+    $("stateNow").textContent = "generation stalled. try again";
     return;
   }
   const p = r.puzzle;
@@ -79,6 +93,8 @@ function newKnot(tier: TargetTier): void {
     startMs: performance.now(),
     solveMs: null,
     hintConstraint: null,
+    record: true,
+    revealed: false,
   };
   $("sigilPanel").classList.remove("show");
   $("timerSub").textContent = "solving";
@@ -119,7 +135,7 @@ function threadClass(i: number, s: State, ev: Eval): { value: number; kind: "anc
 // ── rendering ────────────────────────────────────────────────────────────────
 
 function P(i: number, s: State): { x: number; y: number } {
-  return { x: s.pts[i]!.x * VB, y: s.pts[i]!.y * VB };
+  return { x: VS.ox + s.pts[i]!.x * VS.side, y: VS.oy + s.pts[i]!.y * VS.side };
 }
 
 function colorFor(value: number, kind: string): string {
@@ -133,6 +149,9 @@ function render(): void {
   const s = state;
   if (!s) return;
   const ev = evaluate(s);
+  measureView();
+  svg.setAttribute("viewBox", `0 0 ${VS.w} ${VS.h}`);
+  svg.setAttribute("preserveAspectRatio", "none");
 
   // constraint strands (behind the threads)
   const strands: string[] = [];
@@ -152,8 +171,8 @@ function render(): void {
       // bow the strand toward the knot centroid so crossings read as a knot
       const mx = (pa.x + pb.x) / 2;
       const my = (pa.y + pb.y) / 2;
-      const cx = mx + (VB / 2 - mx) * 0.25;
-      const cy = my + (VB / 2 - my) * 0.25;
+      const cx = mx + (VS.w / 2 - mx) * 0.25;
+      const cy = my + (VS.h / 2 - my) * 0.25;
       const cls = hint ? ' class="hintstrand"' : "";
       strands.push(`<path${cls} d="M ${pa.x.toFixed(1)} ${pa.y.toFixed(1)} Q ${cx.toFixed(1)} ${cy.toFixed(1)} ${pb.x.toFixed(1)} ${pb.y.toFixed(1)}" fill="none" stroke="${col}" stroke-width="${w}" opacity="${op}"/>`);
     }
@@ -167,45 +186,63 @@ function render(): void {
     const col = colorFor(value, kind);
     const isTrue = value === 1;
     const strained = ev.violated !== -1 && s.wp.constraints[ev.violated]!.threads.includes(i);
-    const rOuter = kind === "anchor" ? 15 : isTrue ? 13 : 10;
-    // Only taut (true) threads and true anchors glow; false is slack/dim.
-    const glow = value === 1 ? 1 : 0;
+    const rOuter = kind === "anchor" ? 16 : isTrue ? 14 : 12;
+    const glow = value === 1;
     const clickable = !s.anchors.has(i);
-    const halo = glow ? `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rOuter + 10}" fill="${col}" opacity="0.14"/>` : "";
-    const ring = kind === "derived" ? `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${rOuter + 4}" fill="none" stroke="${col}" stroke-width="1" opacity="0.4"/>` : "";
     const cx = p.x.toFixed(1);
     const cy = p.y.toFixed(1);
+    const halo = glow ? `<circle cx="${cx}" cy="${cy}" r="${rOuter + 11}" fill="${col}" opacity="0.16"/>` : "";
+    // invisible hit target so small orbs still clear a ~44px tap/click area
+    const hit = clickable ? `<circle cx="${cx}" cy="${cy}" r="24" fill="transparent"/>` : "";
+
     let shape = "";
     let anchorCaption = "";
     if (kind === "anchor") {
       const x = (p.x - rOuter).toFixed(1);
       const y = (p.y - rOuter).toFixed(1);
       const d = (rOuter * 2).toFixed(1);
-      // true anchor: filled bright amber + glow (taut). false anchor: dim "off"
-      // fill with an amber outline (slack, pinned) — clearly filled-but-off, not
-      // an empty node.
+      // true anchor: filled bright amber (taut). false anchor: dim "off" fill +
+      // amber outline (slack, pinned) — filled-but-off, not an empty node.
       shape =
         value === 1
           ? `<rect x="${x}" y="${y}" width="${d}" height="${d}" rx="3" fill="var(--anchor)" opacity="0.96"/>`
-          : `<rect x="${x}" y="${y}" width="${d}" height="${d}" rx="3" fill="#241d0f" stroke="var(--anchor)" stroke-width="2" opacity="0.9"/>`;
-      // explicit state caption below every anchor — removes all ambiguity
-      const capY = (p.y + rOuter + 14).toFixed(1);
-      anchorCaption = `<text x="${cx}" y="${capY}" text-anchor="middle" font-family="var(--mono)" font-size="10" letter-spacing="0.1em" fill="var(--anchor)" opacity="${value === 1 ? 0.95 : 0.72}" pointer-events="none">given ${value === 1 ? "true" : "false"}</text>`;
+          : `<rect x="${x}" y="${y}" width="${d}" height="${d}" rx="3" fill="var(--anchor-off)" stroke="var(--anchor)" stroke-width="2" opacity="0.95"/>`;
+      const capY = (p.y + rOuter + 15).toFixed(1);
+      anchorCaption = `<text x="${cx}" y="${capY}" text-anchor="middle" font-family="var(--mono)" font-size="12" letter-spacing="0.06em" fill="var(--anchor)" opacity="${value === 1 ? 0.95 : 0.82}" pointer-events="none">given ${value === 1 ? "true" : "false"}</text>`;
+    } else if (value === 1) {
+      // true: bright taut disc + glow
+      shape = `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="var(--true)" opacity="0.95"/>`;
+    } else if (value === 0) {
+      // false: solid dim disc (slack, closed) — a distinct FORM, not just a hue
+      shape = `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="var(--false)" stroke="var(--false-edge)" stroke-width="1.5" opacity="0.98"/>`;
     } else {
-      shape = `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="${col}" opacity="${isTrue ? 0.95 : kind === "unknown" ? 0.55 : 0.8}"/>`;
+      // unknown: hollow ring (open, undecided) — form carries the state
+      shape = `<circle cx="${cx}" cy="${cy}" r="${rOuter}" fill="var(--field)" stroke="var(--unknown)" stroke-width="1.75" opacity="0.98"/>`;
     }
-    const strainRing = strained ? `<circle cx="${cx}" cy="${cy}" r="${rOuter + 7}" fill="none" stroke="var(--strain)" stroke-width="1.5" opacity="0.8"/>` : "";
-    // dark ink on the bright true-anchor fill; amber on the dim false-anchor fill
-    const labelCol = value === 1 ? "#0a0e14" : kind === "anchor" ? "var(--anchor)" : "var(--ink-dim)";
-    const label = `<text x="${cx}" y="${(p.y + 4).toFixed(1)}" text-anchor="middle" font-family="var(--mono)" font-size="11" fill="${labelCol}" pointer-events="none">${i}</text>`;
+    const strainRing = strained ? `<circle cx="${cx}" cy="${cy}" r="${rOuter + 7}" fill="none" stroke="var(--strain)" stroke-width="2" opacity="0.9"/>` : "";
+    // dark ink on the bright true fill; light ink on hollow/dim/amber-outline
+    const labelCol = value === 1 ? "#08110d" : kind === "anchor" ? "var(--anchor)" : "var(--ink)";
+    const label = `<text x="${cx}" y="${(p.y + 4.5).toFixed(1)}" text-anchor="middle" font-family="var(--mono)" font-size="13" fill="${labelCol}" pointer-events="none">${i}</text>`;
+
+    const word = kind === "anchor" ? `given ${value === 1 ? "true" : "false"}` : value === 1 ? "true" : value === 0 ? "false" : "undecided";
+    const a11y = clickable
+      ? `role="button" tabindex="0" aria-label="thread ${i}, ${word}"`
+      : `role="img" aria-label="thread ${i}, ${word}"`;
     orbs.push(
-      `<g class="thread" data-i="${i}" style="cursor:${clickable ? "pointer" : "default"}">${halo}${ring}${strainRing}${shape}${label}${anchorCaption}</g>`,
+      `<g class="thread" data-i="${i}" ${a11y} style="cursor:${clickable ? "pointer" : "default"}">${hit}${halo}${strainRing}${shape}${label}${anchorCaption}</g>`,
     );
   }
 
   svg.innerHTML = `<g>${strands.join("")}</g><g>${orbs.join("")}</g>`;
   svg.querySelectorAll<SVGGElement>(".thread").forEach((g) => {
-    g.addEventListener("click", () => onThreadClick(Number(g.dataset.i)));
+    const i = Number(g.dataset.i);
+    g.addEventListener("click", () => onThreadClick(i));
+    g.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onThreadClick(i);
+      }
+    });
   });
 
   renderRules(s, ev);
@@ -279,19 +316,30 @@ function doHint(): void {
   stopDemo();
   const s = state;
   if (!s || s.solveMs !== null) return;
-  const r = solve(s.wp.threadCount, s.wp.constraints, { tierCeiling: 4, initial: s.committed });
-  const next = r.trace.find((st) => evaluate(s).derived[st.thread] === U);
-  s.hintConstraint = next ? next.constraint : null;
-  if (next && next.constraint === -1) {
-    $("stateNow").textContent = `try a hypothesis on #${next.thread}`;
+  const ev = evaluate(s);
+  if (ev.violated !== -1) {
+    // a contradictory board has no valid next step to point at
+    s.hintConstraint = null;
+    render();
+    $("stateNow").textContent = "clear the strain first, then ask for a hint"; // after render (renderStatus would overwrite)
+    return;
   }
+  const r = solve(s.wp.threadCount, s.wp.constraints, { tierCeiling: 4, initial: s.committed });
+  const next = r.trace.find((st) => ev.derived[st.thread] === U);
+  s.hintConstraint = next ? next.constraint : null;
   render();
+  if (next) {
+    $("stateNow").textContent =
+      next.constraint === -1 ? `test #${next.thread} both ways` : `look at rule ${next.constraint}`;
+  }
 }
 
 function doReveal(): void {
   stopDemo();
   const s = state;
   if (!s) return;
+  s.record = false;
+  s.revealed = true;
   for (let i = 0; i < s.wp.threadCount; i++) s.committed[i] = Number((s.solution >> BigInt(i)) & 1n) as 0 | 1;
   s.hintConstraint = null;
   render();
@@ -314,7 +362,7 @@ function narrate(step: { rule: number; constraint: number; thread: number; value
   const t = `#${step.thread}`;
   const v = step.value === 1 ? "taut (true)" : "slack (false)";
   if (step.constraint === -1) {
-    return `<span class="lead">a test:</span> assuming ${t} the other way forces a contradiction &mdash; so ${t} goes ${v}`;
+    return `<span class="lead">a test:</span> assuming ${t} the other way forces a contradiction, so ${t} goes ${v}`;
   }
   return `<span class="lead">${phrase(cs[step.constraint]!)}</span> &rArr; ${t} goes ${v}`;
 }
@@ -325,6 +373,7 @@ async function runDemo(fresh: boolean): Promise<void> {
   const s = state;
   if (!s) return;
   // reset to the givens only, then replay from the top
+  s.record = false; // a demonstration, not a player solve — keep it out of the log
   for (let i = 0; i < s.wp.threadCount; i++) if (!s.anchors.has(i)) s.committed[i] = U;
   s.solveMs = null;
   s.startMs = performance.now();
@@ -338,7 +387,7 @@ async function runDemo(fresh: boolean): Promise<void> {
   const steps = full.trace.filter((st) => st.rule !== Rule.R0); // givens are already lit
   const bar = $("demoBar");
   bar.classList.add("show");
-  bar.innerHTML = `<span class="lead">the givens are pinned.</span> each rule below forces one more thread.`;
+  bar.innerHTML = `<span class="lead">the givens are pinned.</span> each rule forces one more thread.`;
   await sleep(1400);
   if (my !== demoToken) return;
 
@@ -363,8 +412,9 @@ async function runDemo(fresh: boolean): Promise<void> {
 function onSolved(s: State): void {
   s.solveMs = Math.round(performance.now() - s.startMs);
   ($("timer") as HTMLElement).classList.add("solved");
-  $("timerSub").textContent = "solved";
-  recordSolve(s);
+  $("timerSub").textContent = s.revealed ? "revealed" : "solved";
+  // Only genuine player solves feed the persisted log — never reveal or demo.
+  if (s.record && !s.revealed) recordSolve(s);
   // collapse → sigil
   const digest = puzzleDigest(s.wp.threadCount, s.wp.constraints);
   const sig = $("sigil");
@@ -433,7 +483,7 @@ const WALK: WalkStep[] = [
   {
     title: "the givens",
     target: "#knot",
-    body: "the amber pinned nodes are handed to you. a filled pin is given true, a hollow one is given false. they are your way in.",
+    body: "the amber pinned nodes are handed to you. a filled pin is given true, a hollow one is given false. they are your way in, and you cannot change them.",
   },
   {
     title: "make a claim",
@@ -441,14 +491,14 @@ const WALK: WalkStep[] = [
     body: "click a thread to pull it taut (true). click again for slack (false). once more to let it go. trying costs nothing.",
   },
   {
-    title: "when claims collide",
-    target: "#knot",
-    body: "assert something inconsistent and the knot strains red at the exact rule that broke. that shows you where, not that you failed.",
-  },
-  {
     title: "the reasons",
     target: "#rules",
     body: "these rules bind the threads together. every step of a solve follows from one of them. nothing here needs a guess.",
+  },
+  {
+    title: "when claims collide",
+    target: "#knot",
+    body: "assert something a rule forbids and the knot strains red right at that rule. that shows you where, not that you failed. reveal shows the full answer if you want it.",
   },
   {
     title: "the finish",
@@ -459,8 +509,25 @@ const WALK: WalkStep[] = [
 
 function startWalkthrough(): void {
   stopDemo();
-  runWalkthrough(WALK, { onWatch: () => void runDemo(true) });
+  runWalkthrough(WALK, {
+    onWatch: () => void runDemo(true),
+    // don't count reading time against the first solve
+    onDone: () => {
+      const s = state;
+      if (s && s.solveMs === null) s.startMs = performance.now();
+    },
+  });
 }
+
+// Re-render on resize so the pixel-coordinate knot re-fits its box.
+let resizeRaf = 0;
+window.addEventListener("resize", () => {
+  if (resizeRaf) return;
+  resizeRaf = requestAnimationFrame(() => {
+    resizeRaf = 0;
+    if (state) render();
+  });
+});
 
 buildTierButtons();
 newKnot(2);
