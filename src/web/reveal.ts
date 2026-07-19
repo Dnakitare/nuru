@@ -2,9 +2,9 @@
 // lit cells glow, and the solved board IS the reward (a rune emerges). Runs the
 // seeded engine generator so the daily glyph is shared + reproducible.
 
-import { type Constraint } from "../../core/index.js";
-import { firstViolated } from "../../solver/index.js";
-import { genReveal, revealDailySeed, type RevealBoard, type RevealOpts } from "../../gen/index.js";
+import { type Constraint } from "../core/index.js";
+import { firstViolated } from "../solver/index.js";
+import { genReveal, revealDailySeed, type RevealBoard, type RevealOpts } from "../gen/index.js";
 
 const U = -1;
 const $ = (id: string) => document.getElementById(id)!;
