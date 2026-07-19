@@ -253,6 +253,23 @@ if (typeof document !== "undefined") {
   // "new glyph" always starts a fresh practice glyph — the daily is a single
   // deterministic board, so regenerating it would just re-show the solved state.
   $("again").addEventListener("click", () => setMode("practice"));
+
+  // first-run intro (teaches counts + = / × links); re-openable via "how to play"
+  const intro = $("intro");
+  $("howto").addEventListener("click", () => intro.classList.add("show"));
+  $("introStart").addEventListener("click", () => intro.classList.remove("show"));
+  intro.addEventListener("click", (e) => {
+    if (e.target === intro) intro.classList.remove("show");
+  });
+  try {
+    if (!localStorage.getItem("fmb_reveal_onboarded")) {
+      localStorage.setItem("fmb_reveal_onboarded", "1");
+      intro.classList.add("show");
+    }
+  } catch {
+    /* storage disabled */
+  }
+
   newGame("daily");
   requestAnimationFrame(timer);
 }
