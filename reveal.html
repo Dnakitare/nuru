@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>reveal · fumbo</title>
+    <style>
+      :root {
+        --field: #0a0e14; --raised: #10161f; --line: #1e2733; --ink: #cfd8e2; --ink-dim: #6b7787; --ink-faint: #3a4553;
+        --lit: #6fe3c4; --lit-glow: #6fe3c4; --dark: #161d27; --unknown: #26303d; --edge: #f0c674; --bad: #e0566a;
+        --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+        --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; min-height: 100vh; color: var(--ink); font-family: var(--sans);
+        background: radial-gradient(900px 600px at 50% -8%, #101a26 0%, transparent 62%), var(--field);
+        -webkit-font-smoothing: antialiased;
+      }
+      .nav { display: flex; gap: 4px; padding: 12px 18px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 13px; }
+      .nav a { color: var(--ink-dim); text-decoration: none; padding: 5px 9px; border-radius: 6px; }
+      .nav a.here { color: var(--lit); background: #113a34; font-weight: 600; }
+      .nav a:hover { color: var(--ink); }
+      .wrap { max-width: 480px; margin: 0 auto; padding: 26px 16px 60px; text-align: center; }
+      h1 { font-size: 24px; margin: 4px 0 2px; letter-spacing: -0.01em; }
+      .tag { color: var(--ink-dim); font-size: 14px; margin: 0 0 18px; line-height: 1.5; }
+      .tag b { color: var(--lit); }
+
+      .tabs { display: inline-flex; background: var(--raised); border: 1px solid var(--line); border-radius: 10px; padding: 3px; gap: 2px; margin-bottom: 16px; }
+      .tab { border: none; background: transparent; font-family: var(--sans); font-size: 14px; padding: 7px 18px; border-radius: 8px; cursor: pointer; color: var(--ink-dim); }
+      .tab.on { background: #0d1219; color: var(--lit); font-weight: 600; }
+
+      .timerbar { font-family: var(--mono); font-size: 20px; color: var(--ink-dim); margin-bottom: 14px; font-variant-numeric: tabular-nums; }
+
+      .boardwrap { display: flex; justify-content: center; }
+      #board { position: relative; }
+      .count { position: absolute; display: grid; place-items: center; font-family: var(--mono); font-size: 15px; color: var(--edge); opacity: 0.85; }
+      .count.done { opacity: 0.28; }
+      .cell {
+        position: absolute; border-radius: 9px; border: 1.5px solid var(--line); cursor: pointer; padding: 0;
+        background: var(--unknown); transition: background 0.14s, box-shadow 0.2s, transform 0.06s;
+      }
+      .cell.unknown:hover { transform: scale(1.05); border-color: var(--ink-faint); }
+      .cell.dark { background: var(--dark); border-color: #131a23; }
+      .cell.dark::after { content: ""; position: absolute; inset: 42%; border-radius: 50%; background: var(--ink-faint); }
+      .cell.lit { background: var(--lit); border-color: var(--lit); box-shadow: 0 0 14px var(--lit-glow); }
+      .cell.lit.reveal { animation: pulse 1.4s ease infinite; }
+      @keyframes pulse { 0%,100% { box-shadow: 0 0 12px var(--lit-glow); } 50% { box-shadow: 0 0 26px var(--lit-glow); } }
+      .cell.given { border-style: dashed; }
+      .cell.strain { border-color: var(--bad) !important; box-shadow: 0 0 12px #e0566a66; }
+      .link {
+        position: absolute; transform: translate(-50%, -50%); z-index: 4; width: 20px; height: 20px; border-radius: 50%;
+        background: var(--raised); border: 1px solid var(--line); color: var(--ink); font-family: var(--mono); font-size: 12px; font-weight: 700;
+        display: grid; place-items: center; pointer-events: none;
+      }
+      .link.eq { color: var(--lit); } .link.xor { color: var(--edge); }
+
+      .now { min-height: 22px; margin: 18px 0 4px; font-size: 15px; font-family: var(--mono); color: var(--ink-dim); }
+      .now.bad { color: var(--bad); }
+      .won { display: none; margin-top: 14px; }
+      .won .txt { font-family: var(--mono); font-size: 14px; color: var(--lit); margin-bottom: 12px; letter-spacing: 0.04em; }
+      .won .row { display: flex; gap: 10px; justify-content: center; }
+      .won button { font-family: var(--sans); font-size: 14px; padding: 9px 18px; border-radius: 9px; cursor: pointer; border: 1px solid var(--line); background: var(--raised); color: var(--ink); }
+      .won button.primary { background: var(--lit); border-color: var(--lit); color: #06120e; font-weight: 600; }
+      .how { margin-top: 26px; font-size: 13px; color: var(--ink-dim); line-height: 1.7; }
+      .how b { color: var(--ink); } .how .eq { color: var(--lit); } .how .xor { color: var(--edge); }
+      @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="/skins.html">← skins</a>
+      <a href="/mines.html">minesweeper</a>
+      <a href="/grid.html">grid</a>
+      <a href="/reveal.html" class="here">reveal</a>
+      <a href="/index.html">knot</a>
+    </nav>
+    <div class="wrap">
+      <h1>reveal</h1>
+      <p class="tag">light the right cells to uncover the hidden glyph. edge numbers count lit cells per line; <b>=</b> cells match, <b>×</b> cells differ. always solvable, <b>never a guess</b>.</p>
+
+      <div class="tabs">
+        <button class="tab on" data-mode="daily">daily</button>
+        <button class="tab" data-mode="practice">practice</button>
+      </div>
+      <div class="timerbar" id="timer">0:00</div>
+
+      <div class="boardwrap"><div id="board"></div></div>
+      <div class="now" id="now">…</div>
+      <div class="won" id="won">
+        <div class="txt" id="wonText"></div>
+        <div class="row"><button class="primary" id="share">share</button><button id="again">new glyph</button></div>
+      </div>
+      <p class="how">tap a cell to cycle <b>lit</b> → <b>dark</b> → unknown. a <span class="eq">=</span> link means two cells share a state; <span class="xor">×</span> means they differ.</p>
+    </div>
+    <script type="module" src="/src/web/skins/reveal.ts"></script>
+  </body>
+</html>
