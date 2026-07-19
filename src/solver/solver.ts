@@ -106,6 +106,7 @@ function forcedByCount(c: Constraint, ci: number, s: Int8Array, out: Forcing[]):
 
   switch (c.type) {
     case CType.COUNT_EQ:
+    case CType.COUNT_EQ_WIDE: // same semantics, wider arity
       if (nT === k) forceAll(0, Rule.R2_1); // quota of trues met → rest false
       else if (nF === n - k) forceAll(1, Rule.R2_1); // quota of falses met → rest true
       return;
@@ -160,7 +161,7 @@ function isViolated(c: Constraint, s: Int8Array): boolean {
     }
     const n = t.length;
     const nF = n - nT - nU;
-    if (c.type === CType.COUNT_EQ) return nT > k || nF > n - k;
+    if (c.type === CType.COUNT_EQ || c.type === CType.COUNT_EQ_WIDE) return nT > k || nF > n - k;
     if (c.type === CType.COUNT_LE) return nT > k;
     return nT + nU < k; // COUNT_GE
   }

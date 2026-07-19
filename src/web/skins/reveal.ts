@@ -8,7 +8,7 @@ import { genReveal, revealDailySeed, type RevealBoard, type RevealOpts } from ".
 
 const U = -1;
 const $ = (id: string) => document.getElementById(id)!;
-const OPTS: RevealOpts = { rows: 6, cols: 6 };
+const OPTS: RevealOpts = { rows: 8, cols: 8 };
 const EPOCH = Date.UTC(2026, 0, 1);
 const STORE = "fmb_reveal_daily";
 
@@ -60,9 +60,7 @@ function evalBoard(): { violated: number; solved: boolean; unknown: number } {
   return { violated, solved: unknown === 0 && violated === -1, unknown };
 }
 
-const CELL = 50;
-const GAP = 6;
-const PAD = 30; // room for edge count labels
+const GAP = 5;
 
 function render(): void {
   const s = st;
@@ -73,6 +71,10 @@ function render(): void {
   if (ev.violated >= 0) for (const c of (board.constraints[ev.violated] as Constraint).threads) strained.add(c);
 
   const wrap = $("board");
+  // fit the grid (plus its edge labels) to the available width
+  const avail = Math.min(($("boardwrap").clientWidth || 440) - 4, 440);
+  const PAD = Math.max(20, Math.round(avail * 0.07));
+  const CELL = Math.max(22, Math.floor((avail - PAD) / board.cols) - GAP);
   wrap.innerHTML = "";
   const span = (n: number) => PAD + n * (CELL + GAP);
   wrap.style.width = wrap.style.height = `${PAD + board.cols * (CELL + GAP)}px`;

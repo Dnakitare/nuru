@@ -126,6 +126,22 @@ function generateVectors(): { wire: WireVector[]; solve: SolveVector[]; grade: G
     }
   }
 
+  // 2b. COUNT_EQ_WIDE (appended id 9) at arity 8 — the wide-count type used by
+  // grid skins wider than 6. Anchors 0..3 true so the puzzle is fully solvable.
+  {
+    const threads = [0, 1, 2, 3, 4, 5, 6, 7];
+    const cs: Constraint[] = [
+      { type: CType.ANCHOR, threads: [0], k: 1 },
+      { type: CType.ANCHOR, threads: [1], k: 1 },
+      { type: CType.ANCHOR, threads: [2], k: 1 },
+      { type: CType.ANCHOR, threads: [3], k: 1 },
+      { type: CType.COUNT_EQ_WIDE, threads, k: 4 },
+    ];
+    const wp = buildWirePuzzle(8, cs, 0x2f00);
+    const local = encodePuzzle(wp, { includeSolution: true });
+    wire.push({ name: "puzzle-count_eq_wide-a8-local", kind: "puzzle", payload: local, decoded: decodedPuzzleJson(decodePuzzle(local)) });
+  }
+
   // 3. Result vectors: both puzzleRef kinds.
   const rDaily = encodeResult({ ref: { kind: PuzzleRef.DAILY, dateCode: 258 }, solved: true, durationSec: 252, hintsUsed: 0, testsUsed: 1, maxTierExercised: 3 });
   wire.push({ name: "result-daily", kind: "result", payload: rDaily, decoded: { ref: { kind: PuzzleRef.DAILY, dateCode: 258 }, solved: true, durationSec: 252, hintsUsed: 0, testsUsed: 1, maxTierExercised: 3 } });

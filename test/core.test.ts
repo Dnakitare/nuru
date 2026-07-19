@@ -94,6 +94,21 @@ describe("wire puzzle round-trip", () => {
     expect(back.solution).toBeUndefined();
   });
 
+  it("round-trips the appended COUNT_EQ_WIDE (id 9) at arity 8", () => {
+    const wide: WirePuzzle = {
+      threadCount: 8,
+      layoutSeed: 1,
+      constraints: [
+        { type: CType.ANCHOR, threads: [0], k: 1 },
+        { type: CType.COUNT_EQ_WIDE, threads: [0, 1, 2, 3, 4, 5, 6, 7], k: 4 },
+      ],
+    };
+    const s = encodePuzzle(wide);
+    const back = decodePuzzle(s);
+    expect(back.constraints).toEqual(wide.constraints);
+    expect(encodePuzzle(back)).toBe(s);
+  });
+
   it("encode(decode(x)) is byte-identical (TESTING §Phase1 wire round-trip)", () => {
     const s1 = encodePuzzle(puzzle, { includeSolution: true });
     const d = decodePuzzle(s1);

@@ -4712,5 +4712,59 @@
         }
       ]
     }
+  },
+  {
+    "name": "puzzle-count_eq_wide-a8-local",
+    "kind": "puzzle",
+    "payload": "fmb1_AAgFAC8AAAEAAQABAAEBAQABAgEAAQMBCQgAAQIDBAUGBwQPAAAAAAAAAD66Fsc",
+    "decoded": {
+      "threadCount": 8,
+      "layoutSeed": 12032,
+      "constraints": [
+        {
+          "type": 0,
+          "threads": [
+            0
+          ],
+          "k": 1
+        },
+        {
+          "type": 0,
+          "threads": [
+            1
+          ],
+          "k": 1
+        },
+        {
+          "type": 0,
+          "threads": [
+            2
+          ],
+          "k": 1
+        },
+        {
+          "type": 0,
+          "threads": [
+            3
+          ],
+          "k": 1
+        },
+        {
+          "type": 9,
+          "threads": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "k": 4
+        }
+      ],
+      "solution": "15"
+    }
   }
 ]

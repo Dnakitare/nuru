@@ -29,6 +29,7 @@ export const CType = {
   COUNT_EQ: 6, // arity 2..6 — exactly k of n true
   COUNT_LE: 7, // arity 2..6 — at most k true
   COUNT_GE: 8, // arity 2..6 — at least k true
+  COUNT_EQ_WIDE: 9, // arity 2..16 — exactly k of n true (same as COUNT_EQ, wider)
 } as const;
 export type CType = (typeof CType)[keyof typeof CType];
 
@@ -52,6 +53,11 @@ export const CONSTRAINT_REGISTRY: readonly CTypeMeta[] = [
   { id: CType.COUNT_EQ, name: "COUNT_EQ", minArity: 2, maxArity: 6, hasK: true },
   { id: CType.COUNT_LE, name: "COUNT_LE", minArity: 2, maxArity: 6, hasK: true },
   { id: CType.COUNT_GE, name: "COUNT_GE", minArity: 2, maxArity: 6, hasK: true },
+  // APPENDED (id 9): same semantics as COUNT_EQ but a wider arity cap, for grid
+  // skins with lines longer than 6 (COUNT_EQ's cap of 6 came from the knot's
+  // ring rendering, not a logical limit). Append-only per §1.2 — old decoders
+  // fail loudly on id 9 ("newer version"), which is the intended behavior.
+  { id: CType.COUNT_EQ_WIDE, name: "COUNT_EQ_WIDE", minArity: 2, maxArity: 16, hasK: true },
 ];
 
 export function metaFor(type: number): CTypeMeta {
@@ -63,7 +69,7 @@ export function metaFor(type: number): CTypeMeta {
 }
 
 export function isCountType(type: number): boolean {
-  return type === CType.COUNT_EQ || type === CType.COUNT_LE || type === CType.COUNT_GE;
+  return type === CType.COUNT_EQ || type === CType.COUNT_LE || type === CType.COUNT_GE || type === CType.COUNT_EQ_WIDE;
 }
 
 // ── Puzzle objects (SPEC-CORE §1.1, §1.3) ────────────────────────────────────

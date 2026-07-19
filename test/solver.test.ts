@@ -84,6 +84,22 @@ describe("Tier 2 — counting", () => {
     expect(values(r.value)).toEqual([0, 1, 1]);
   });
 
+  it("R2.1 COUNT_EQ_WIDE (id 9) forces like COUNT_EQ at arity 8", () => {
+    // 8 threads; anchor 3 true; exactly-4 over all 8 ⇒ once 4 trues known the
+    // rest are false, and the remaining falses fill once the quota is met.
+    const cs: Constraint[] = [
+      { type: CType.ANCHOR, threads: [0], k: 1 },
+      { type: CType.ANCHOR, threads: [1], k: 1 },
+      { type: CType.ANCHOR, threads: [2], k: 1 },
+      { type: CType.ANCHOR, threads: [3], k: 1 },
+      { type: CType.COUNT_EQ_WIDE, threads: [0, 1, 2, 3, 4, 5, 6, 7], k: 4 },
+    ];
+    const r = solve(8, cs, { tierCeiling: 2 });
+    expect(r.solved).toBe(true);
+    expect(values(r.value)).toEqual([1, 1, 1, 1, 0, 0, 0, 0]);
+    expect(r.trace.some((s) => s.rule === Rule.R2_1)).toBe(true);
+  });
+
   it("counting is unavailable below the ceiling", () => {
     const cs: Constraint[] = [
       { type: CType.ANCHOR, threads: [0], k: 1 },

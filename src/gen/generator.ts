@@ -81,6 +81,7 @@ const BIN = (impl: number, xor: number, nand: number, or: number, equiv: number)
   [CType.COUNT_EQ]: 0,
   [CType.COUNT_LE]: 0,
   [CType.COUNT_GE]: 0,
+  [CType.COUNT_EQ_WIDE]: 0,
 });
 
 const PRIORS: Record<TargetTier, Prior> = {

@@ -72,7 +72,7 @@ export function genReveal(seed: number, _opts: RevealOpts): RevealBoard {
       k += sol[r * cols + c]!;
     }
     rowCounts.push(k);
-    rules.push({ type: CType.COUNT_EQ, threads: row, k });
+    rules.push({ type: CType.COUNT_EQ_WIDE, threads: row, k });
   }
   for (let c = 0; c < cols; c++) {
     const col: number[] = [];
@@ -82,7 +82,7 @@ export function genReveal(seed: number, _opts: RevealOpts): RevealBoard {
       k += sol[r * cols + c]!;
     }
     colCounts.push(k);
-    rules.push({ type: CType.COUNT_EQ, threads: col, k });
+    rules.push({ type: CType.COUNT_EQ_WIDE, threads: col, k });
   }
 
   // candidate clues: relational links (preferred) then anchor givens (last resort)
