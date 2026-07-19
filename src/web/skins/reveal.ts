@@ -183,9 +183,10 @@ function finish(replay: boolean): void {
   const s = st!;
   const label = s.mode === "daily" ? `glyph #${s.dayNo}` : "practice";
   $("won").style.display = "block";
+  $("wonName").textContent = s.board.name;
   $("wonText").textContent = `${replay ? "revealed earlier" : "revealed"} · ${label} · ${fmtTime(s.solveMs ?? 0)} · no guesses`;
   ($("share") as HTMLButtonElement).onclick = () => {
-    const text = `fumbo · ${label}\n${fmtTime(s.solveMs ?? 0)} · no guesses ✦\n${location.origin}/reveal.html`;
+    const text = `fumbo · ${label} · ${s.board.name}\n${fmtTime(s.solveMs ?? 0)} · no guesses ✦\n${location.origin}/reveal.html`;
     navigator.clipboard?.writeText(text).then(() => {
       $("share").textContent = "copied";
       setTimeout(() => ($("share").textContent = "share"), 1400);

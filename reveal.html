@@ -58,7 +58,8 @@
       .now { min-height: 22px; margin: 18px 0 4px; font-size: 15px; font-family: var(--mono); color: var(--ink-dim); }
       .now.bad { color: var(--bad); }
       .won { display: none; margin-top: 14px; }
-      .won .txt { font-family: var(--mono); font-size: 14px; color: var(--lit); margin-bottom: 12px; letter-spacing: 0.04em; }
+      .won .name { font-size: 22px; font-weight: 700; color: var(--ink); text-transform: lowercase; letter-spacing: 0.02em; margin-bottom: 2px; }
+      .won .txt { font-family: var(--mono); font-size: 13px; color: var(--lit); margin-bottom: 12px; letter-spacing: 0.04em; }
       .won .row { display: flex; gap: 10px; justify-content: center; }
       .won button { font-family: var(--sans); font-size: 14px; padding: 9px 18px; border-radius: 9px; cursor: pointer; border: 1px solid var(--line); background: var(--raised); color: var(--ink); }
       .won button.primary { background: var(--lit); border-color: var(--lit); color: #06120e; font-weight: 600; }
@@ -88,6 +89,7 @@
       <div class="boardwrap"><div id="board"></div></div>
       <div class="now" id="now">…</div>
       <div class="won" id="won">
+        <div class="name" id="wonName"></div>
         <div class="txt" id="wonText"></div>
         <div class="row"><button class="primary" id="share">share</button><button id="again">new glyph</button></div>
       </div>

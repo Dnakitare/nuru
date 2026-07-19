@@ -9,6 +9,7 @@
 
 import { CType, type Constraint, type DifficultyVector } from "../core/index.js";
 import { solve } from "../solver/index.js";
+import { GLYPHS } from "./glyphs.js";
 import { grade } from "./grade.js";
 import { Rng } from "./rng.js";
 
@@ -19,6 +20,7 @@ export interface RevealLink {
 }
 export interface RevealBoard {
   seed: number;
+  name: string; // the glyph's name — revealed on solve
   rows: number;
   cols: number;
   sol: Uint8Array; // 1 = lit
@@ -50,99 +52,93 @@ function greedyReveal(threadCount: number, rules: Constraint[], bundles: Constra
   return kept;
 }
 
-export function genReveal(seed: number, opts: RevealOpts): RevealBoard {
+type BundleMeta = { kind: "link"; link: RevealLink } | { kind: "given"; given: { cell: number; v: 0 | 1 } };
+
+export function genReveal(seed: number, _opts: RevealOpts): RevealBoard {
   const rng = new Rng(seed);
-  const { rows, cols } = opts;
+  const glyph = GLYPHS[rng.int(GLYPHS.length)]!;
+  const { rows, cols, cells: sol, name } = glyph;
   const n = rows * cols;
 
-  for (let attempt = 0; attempt < 800; attempt++) {
-    // bilateral-symmetric glyph solution
-    const sol = new Uint8Array(n);
-    let lit = 0;
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < Math.ceil(cols / 2); c++) {
-        const bit = rng.float() < 0.5 ? 1 : 0;
-        sol[r * cols + c] = bit;
-        sol[r * cols + (cols - 1 - c)] = bit;
-      }
-    }
-    for (let i = 0; i < n; i++) lit += sol[i]!;
-    if (lit < n * 0.3 || lit > n * 0.7) continue; // avoid degenerate glyphs
-
-    // always-present clues: row + column counts (the picross scaffolding)
-    const rules: Constraint[] = [];
-    const rowCounts: number[] = [];
-    const colCounts: number[] = [];
-    for (let r = 0; r < rows; r++) {
-      const row: number[] = [];
-      let k = 0;
-      for (let c = 0; c < cols; c++) {
-        row.push(r * cols + c);
-        k += sol[r * cols + c]!;
-      }
-      rowCounts.push(k);
-      rules.push({ type: CType.COUNT_EQ, threads: row, k });
-    }
+  // always-present clues: row + column counts (the picross scaffolding)
+  const rules: Constraint[] = [];
+  const rowCounts: number[] = [];
+  const colCounts: number[] = [];
+  for (let r = 0; r < rows; r++) {
+    const row: number[] = [];
+    let k = 0;
     for (let c = 0; c < cols; c++) {
-      const col: number[] = [];
-      let k = 0;
-      for (let r = 0; r < rows; r++) {
-        col.push(r * cols + c);
-        k += sol[r * cols + c]!;
-      }
-      colCounts.push(k);
-      rules.push({ type: CType.COUNT_EQ, threads: col, k });
+      row.push(r * cols + c);
+      k += sol[r * cols + c]!;
     }
-
-    // candidate clues: relational links (preferred) then anchor givens (last resort)
-    const linkMeta: RevealLink[] = [];
-    const linkBundles: Constraint[][] = [];
+    rowCounts.push(k);
+    rules.push({ type: CType.COUNT_EQ, threads: row, k });
+  }
+  for (let c = 0; c < cols; c++) {
+    const col: number[] = [];
+    let k = 0;
     for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        const cell = r * cols + c;
-        const nbrs: number[] = [];
-        if (c + 1 < cols) nbrs.push(cell + 1);
-        if (r + 1 < rows) nbrs.push(cell + cols);
-        for (const b of nbrs) {
-          const eq = sol[cell] === sol[b];
-          linkMeta.push({ a: cell, b, eq });
-          linkBundles.push([{ type: eq ? CType.EQUIV : CType.XOR, threads: [cell, b] }]);
-        }
+      col.push(r * cols + c);
+      k += sol[r * cols + c]!;
+    }
+    colCounts.push(k);
+    rules.push({ type: CType.COUNT_EQ, threads: col, k });
+  }
+
+  // candidate clues: relational links (preferred) then anchor givens (last resort)
+  const linkMeta: RevealLink[] = [];
+  const linkBundles: Constraint[][] = [];
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const cell = r * cols + c;
+      const nbrs: number[] = [];
+      if (c + 1 < cols) nbrs.push(cell + 1);
+      if (r + 1 < rows) nbrs.push(cell + cols);
+      for (const b of nbrs) {
+        const eq = sol[cell] === sol[b];
+        linkMeta.push({ a: cell, b, eq });
+        linkBundles.push([{ type: eq ? CType.EQUIV : CType.XOR, threads: [cell, b] }]);
       }
     }
-    const givenMeta: { cell: number; v: 0 | 1 }[] = [];
-    const givenBundles: Constraint[][] = [];
-    for (let i = 0; i < n; i++) {
-      givenMeta.push({ cell: i, v: sol[i] as 0 | 1 });
-      givenBundles.push([{ type: CType.ANCHOR, threads: [i], k: sol[i]! }]);
-    }
+  }
+  const givenMeta: { cell: number; v: 0 | 1 }[] = [];
+  const givenBundles: Constraint[][] = [];
+  for (let i = 0; i < n; i++) {
+    givenMeta.push({ cell: i, v: sol[i] as 0 | 1 });
+    givenBundles.push([{ type: CType.ANCHOR, threads: [i], k: sol[i]! }]);
+  }
 
+  // Try several clue shufflings; keep the one that hides the glyph best (fewest
+  // anchor givens — ideally zero, so nothing is pre-lit).
+  let best: { kept: number[]; bundles: Constraint[][]; meta: BundleMeta[]; givens: number } | null = null;
+  for (let attempt = 0; attempt < 12; attempt++) {
     const linkOrder = rng.shuffle([...linkBundles.keys()]);
     const givenOrder = rng.shuffle([...givenBundles.keys()]);
     const bundles = [...linkOrder.map((i) => linkBundles[i]!), ...givenOrder.map((i) => givenBundles[i]!)];
-    const bundleMeta: ({ kind: "link"; link: RevealLink } | { kind: "given"; given: { cell: number; v: 0 | 1 } })[] = [
+    const meta: BundleMeta[] = [
       ...linkOrder.map((i) => ({ kind: "link" as const, link: linkMeta[i]! })),
       ...givenOrder.map((i) => ({ kind: "given" as const, given: givenMeta[i]! })),
     ];
-
     const kept = greedyReveal(n, rules, bundles);
     if (!kept) continue;
-
-    const links: RevealLink[] = [];
-    const givens: { cell: number; v: 0 | 1 }[] = [];
-    const constraints = [...rules];
-    for (const idx of kept) {
-      const m = bundleMeta[idx]!;
-      constraints.push(...bundles[idx]!);
-      if (m.kind === "link") links.push(m.link);
-      else givens.push(m.given);
-    }
-
-    const sr = solve(n, constraints, { tierCeiling: 4 });
-    if (!sr.solved) continue;
-    return { seed, rows, cols, sol, rowCounts, colCounts, constraints, links, givens, difficulty: grade(sr, constraints, n) };
+    const givensUsed = kept.filter((i) => meta[i]!.kind === "given").length;
+    if (!best || givensUsed < best.givens) best = { kept, bundles, meta, givens: givensUsed };
+    if (givensUsed === 0) break;
   }
-  throw new Error("reveal generation failed to converge");
+  if (!best) throw new Error("reveal generation failed to converge");
+
+  const links: RevealLink[] = [];
+  const givens: { cell: number; v: 0 | 1 }[] = [];
+  const constraints = [...rules];
+  for (const idx of best.kept) {
+    const m = best.meta[idx]!;
+    constraints.push(...best.bundles[idx]!);
+    if (m.kind === "link") links.push(m.link);
+    else givens.push(m.given);
+  }
+
+  const sr = solve(n, constraints, { tierCeiling: 4 });
+  return { seed, name, rows, cols, sol, rowCounts, colCounts, constraints, links, givens, difficulty: grade(sr, constraints, n) };
 }
 
 /** Stable per-date seed for the daily glyph. */
