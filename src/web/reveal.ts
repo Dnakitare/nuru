@@ -12,6 +12,35 @@ const $ = (id: string) => document.getElementById(id)!;
 const OPTS: RevealOpts = { rows: 8, cols: 8 };
 const EPOCH = Date.UTC(2026, 0, 1);
 const STORE = "nuru_daily";
+const STREAK = "nuru_streak";
+
+interface Streak {
+  current: number;
+  best: number;
+  lastDay: number;
+}
+function readStreak(): Streak {
+  try {
+    const r = JSON.parse(localStorage.getItem(STREAK) ?? "null");
+    if (r && typeof r.current === "number") return r as Streak;
+  } catch {
+    /* storage disabled */
+  }
+  return { current: 0, best: 0, lastDay: -9999 };
+}
+/** Count today's solve toward the streak (idempotent per day). */
+function bumpStreak(dayNo: number): Streak {
+  const s = readStreak();
+  if (s.lastDay === dayNo) return s; // already counted today
+  const current = s.lastDay === dayNo - 1 ? s.current + 1 : 1; // consecutive day extends, else reset
+  const rec: Streak = { current, best: Math.max(s.best, current), lastDay: dayNo };
+  try {
+    localStorage.setItem(STREAK, JSON.stringify(rec));
+  } catch {
+    /* ignore */
+  }
+  return rec;
+}
 
 interface State {
   mode: "daily" | "practice";
@@ -187,6 +216,7 @@ function onSolved(): void {
     } catch {
       /* ignore */
     }
+    bumpStreak(s.dayNo); // count this solve toward the daily streak
   }
   render();
   finish(false);
@@ -203,6 +233,16 @@ function finish(replay: boolean): void {
   $("won").style.display = "block";
   $("wonName").textContent = s.board.name;
   $("wonText").textContent = `${replay ? "revealed earlier" : "revealed"} · ${label} · ${fmtTime(s.solveMs ?? 0)} · no guesses`;
+  // daily streak (practice doesn't count toward it)
+  const streakEl = $("wonStreak");
+  if (s.mode === "daily") {
+    const st = readStreak();
+    const days = (n: number) => `${n} day${n === 1 ? "" : "s"}`;
+    streakEl.textContent = st.current > 0 ? `🔥 ${days(st.current)} streak${st.best > st.current ? ` · best ${days(st.best)}` : ""}` : "";
+    streakEl.style.display = st.current > 0 ? "block" : "none";
+  } else {
+    streakEl.style.display = "none";
+  }
   // the 8×8 board is tall — make sure the result card is actually visible
   requestAnimationFrame(() => $("won").scrollIntoView({ behavior: "smooth", block: "center" }));
   ($("share") as HTMLButtonElement).onclick = () => void doShare();

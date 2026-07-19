@@ -20,7 +20,10 @@ export type RevealTier = "easy" | "medium" | "hard";
  * is predictable — easy early week, hardest on the weekend, like a crossword.
  */
 export function dailyTier(weekday: number): RevealTier {
-  return (["medium", "easy", "easy", "medium", "medium", "hard", "hard"] as const)[weekday % 7]!;
+  // 0=Sun..6=Sat. Ramp Mon→Sat, hardest on the weekend (like a crossword week).
+  // Weighted toward the larger easy pool (19 glyphs) so medium (7) and hard (12)
+  // repeat less often across the rotation.
+  return (["medium", "easy", "easy", "easy", "medium", "hard", "hard"] as const)[weekday % 7]!;
 }
 
 export function tierPool(tier: RevealTier): number[] {

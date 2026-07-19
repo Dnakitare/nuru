@@ -68,12 +68,16 @@ export const GLYPHS: Glyph[] = GLYPH_ART.map(({ name, art }) => {
   return { name, rows, cols, cells };
 });
 
-// Difficulty tiers, from measured solve effort (relational links needed): tier 0
-// glyphs solve from row/column counts alone (picross-easy); tier 1/2 need
-// increasing relational deduction. Used to keep the daily's difficulty
-// consistent (see the daily schedule) instead of swinging randomly.
-const MEDIUM = new Set(["heart", "spade", "letter z", "anchor", "ghost", "skull", "sun", "cat", "key", "moon", "house"]);
-const HARD = new Set(["eye", "letter k", "letter s", "letter a", "sparkle", "x", "bowtie", "ring"]);
+// Difficulty tiers, MEASURED not hand-guessed: each glyph's board is generated
+// across 24 seeds and tiered by the relational-deduction load it needs — the
+// median count of = / ≠ links (plus heavily-weighted pre-lit givens). tier 0
+// solves from row/column counts alone (no relational reasoning, picross-easy);
+// tier 1/2 need increasing link deduction. Cuts: 0 links = easy, 1–9 = medium,
+// 10+ = hard. Regenerate the split with `npx tsx measure-tiers.mts`.
+// NOTE: this is measured difficulty, not human-anchored — the §4.2 Spearman
+// gate (measured vs. real solve-time) still needs a human solving by hand.
+const MEDIUM = new Set(["heart", "spade", "letter z", "anchor", "sun", "ghost", "skull"]);
+const HARD = new Set(["house", "cat", "key", "moon", "letter s", "letter k", "eye", "letter a", "sparkle", "x", "bowtie", "ring"]);
 
 export function glyphTier(name: string): 0 | 1 | 2 {
   return HARD.has(name) ? 2 : MEDIUM.has(name) ? 1 : 0;
