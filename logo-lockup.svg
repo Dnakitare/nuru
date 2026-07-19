@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 160" width="620" height="160" role="img" aria-label="nuru">
+<g transform="translate(0,0)">
+<defs>
+    <radialGradient id="halo" cx="50%" cy="8%" r="70%">
+      <stop offset="0%" stop-color="#16263a" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0a0e14" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="g" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="2.9" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+<rect width="160" height="160" rx="35" fill="#0a0e14"/>
+       <rect width="160" height="160" rx="35" fill="url(#halo)"/>
+<rect x="26.0" y="26.0" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="48.6" y="26.0" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="71.2" y="26.0" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="93.8" y="26.0" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="116.4" y="26.0" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="26.0" y="48.6" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="48.6" y="48.6" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="71.2" y="48.6" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="93.8" y="48.6" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="116.4" y="48.6" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="26.0" y="71.2" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="48.6" y="71.2" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="71.2" y="71.2" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="93.8" y="71.2" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="116.4" y="71.2" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="26.0" y="93.8" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="48.6" y="93.8" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="71.2" y="93.8" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="93.8" y="93.8" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="116.4" y="93.8" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="26.0" y="116.4" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+<rect x="48.6" y="116.4" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="71.2" y="116.4" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="93.8" y="116.4" width="17.6" height="17.6" rx="3.9" fill="#141c26" stroke="#1e2733" stroke-width="1"/>
+<rect x="116.4" y="116.4" width="17.6" height="17.6" rx="3.9" fill="#6fe3c4" filter="url(#g)"/>
+</g>
+<text x="196" y="92" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="88" font-weight="600" letter-spacing="6" fill="#cfd8e2">nuru</text>
+<text x="199" y="128" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="21" letter-spacing="2" fill="#6b7787">reveal the hidden glyph</text>
+</svg>
