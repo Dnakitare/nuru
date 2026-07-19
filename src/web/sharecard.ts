@@ -52,7 +52,7 @@ export function renderShareCard(opts: CardOpts): Promise<Blob> {
   ctx.font = "600 30px ui-monospace, Menlo, monospace";
   ctx.save();
   ctx.translate(W / 2, 96);
-  ctx.fillText("f u m b o", 0, 0);
+  ctx.fillText("n u r u", 0, 0);
   ctx.restore();
 
   // the visual: solved glyph (practice) or the spoiler-free emblem (daily)

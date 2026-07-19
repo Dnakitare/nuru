@@ -3,7 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>reveal · fumbo</title>
+    <title>nuru — reveal the hidden glyph</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./logo-mark.svg" />
+    <meta name="theme-color" content="#0a0e14" />
+    <meta name="description" content="A daily logic puzzle: light the right cells to reveal a hidden glyph. Always solvable, never a guess." />
     <style>
       :root {
         --field: #0a0e14; --raised: #10161f; --line: #1e2733; --ink: #cfd8e2; --ink-dim: #6b7787; --ink-faint: #3a4553;
@@ -18,7 +22,8 @@
         -webkit-font-smoothing: antialiased;
       }
       .wrap { max-width: 480px; margin: 0 auto; padding: 40px 16px 60px; text-align: center; }
-      h1 { font-size: 24px; margin: 4px 0 2px; letter-spacing: -0.01em; }
+      .brandmark { display: block; margin: 0 auto -2px; filter: drop-shadow(0 0 10px rgba(111, 227, 196, 0.35)); }
+      h1 { font-size: 24px; margin: 4px 0 2px; letter-spacing: 0.04em; font-weight: 700; text-transform: lowercase; }
       .tag { color: var(--ink-dim); font-size: 14px; margin: 0 0 18px; line-height: 1.5; }
       .tag b { color: var(--lit); }
 
@@ -47,12 +52,14 @@
       @keyframes pulse { 0%,100% { box-shadow: 0 0 12px var(--lit-glow); } 50% { box-shadow: 0 0 26px var(--lit-glow); } }
       .cell.given { border-style: dashed; }
       .cell.strain { border-color: var(--bad) !important; box-shadow: 0 0 12px #e0566a66; }
+      .bridge { position: absolute; transform: translate(-50%, -50%); z-index: 3; border-radius: 3px; opacity: 0.55; pointer-events: none; }
+      .bridge.eq { background: var(--lit); } .bridge.xor { background: var(--edge); }
       .link {
-        position: absolute; transform: translate(-50%, -50%); z-index: 4; width: 20px; height: 20px; border-radius: 50%;
-        background: var(--raised); border: 1px solid var(--line); color: var(--ink); font-family: var(--mono); font-size: 12px; font-weight: 700;
+        position: absolute; transform: translate(-50%, -50%); z-index: 4; width: 22px; height: 22px; border-radius: 50%;
+        background: var(--raised); font-family: var(--mono); font-size: 14px; font-weight: 700;
         display: grid; place-items: center; pointer-events: none;
       }
-      .link.eq { color: var(--lit); } .link.xor { color: var(--edge); }
+      .link.eq { color: var(--lit); border: 1.5px solid var(--lit); } .link.xor { color: var(--edge); border: 1.5px solid var(--edge); }
 
       .now { min-height: 22px; margin: 18px 0 4px; font-size: 15px; font-family: var(--mono); color: var(--ink-dim); }
       .now.bad { color: var(--bad); }
@@ -87,7 +94,8 @@
   </head>
   <body>
     <div class="wrap">
-      <h1>reveal</h1>
+      <img class="brandmark" src="./logo-glyph.svg" alt="" width="52" height="52" />
+      <h1>nuru</h1>
       <p class="tag">light the right cells to uncover the hidden glyph. always solvable, <b>never a guess</b>.</p>
       <button class="howto-link" id="howto">how to play</button>
 
@@ -109,11 +117,11 @@
         <div class="txt" id="wonText"></div>
         <div class="row"><button class="primary" id="share">share</button><button id="again">new glyph</button></div>
       </div>
-      <p class="how">tap a cell to cycle <b>lit</b> → <b>dark</b> → unknown. a <span class="eq">=</span> link means two cells share a state; <span class="xor">×</span> means they differ.</p>
+      <p class="how">tap a cell to cycle <b>lit</b> → <b>dark</b> → unknown. a <span class="eq">=</span> link means two joined cells share a state; <span class="xor">≠</span> means they differ.</p>
     </div>
     <div class="intro" id="intro">
       <div class="intro-card">
-        <h2>reveal</h2>
+        <h2>nuru</h2>
         <p class="isub">a hidden glyph is drawn on the grid. light the right cells to uncover it.</p>
         <div class="irule">
           <span class="demo"><span class="dc num">2</span><span class="dc lit"></span><span class="dc lit"></span><span class="dc"></span></span>
@@ -121,11 +129,11 @@
         </div>
         <div class="irule">
           <span class="demo"><span class="dc lit"></span><span class="dlink" style="color:var(--lit)">=</span><span class="dc lit"></span></span>
-          <span><b style="color:var(--lit)">=</b> linked cells share a state (both lit or both dark)</span>
+          <span>cells joined by <b style="color:var(--lit)">=</b> share a state (both lit or both dark)</span>
         </div>
         <div class="irule">
-          <span class="demo"><span class="dc lit"></span><span class="dlink" style="color:var(--edge)">×</span><span class="dc dark"></span></span>
-          <span><b style="color:var(--edge)">×</b> linked cells differ (one lit, one dark)</span>
+          <span class="demo"><span class="dc lit"></span><span class="dlink" style="color:var(--edge)">≠</span><span class="dc dark"></span></span>
+          <span>cells joined by <b style="color:var(--edge)">≠</b> differ (one lit, one dark)</span>
         </div>
         <div class="irule">
           <span class="demo"><span class="dc"></span><span class="dc lit"></span><span class="dc dark"></span></span>

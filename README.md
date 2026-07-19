@@ -1,54 +1,52 @@
-# fmb (provisional: "Fumbo")
+<p align="center">
+  <img src="public/logo-lockup.svg" width="440" alt="nuru — reveal the hidden glyph" />
+</p>
 
-A tactile deduction game where logic puzzles materialize as knots of luminous
-threads. The constraint graph is simultaneously the puzzle, the picture, the
-difficulty rating, and the hint system.
+<p align="center">
+  <b><a href="https://dnakitare.github.io/nuru/">Play the daily →</a></b>
+</p>
 
-Specs live in [`docs/`](docs/). Read order: `HANDOFF.md` → `SPEC-CORE.md` (the
-frozen contract) → generator → interaction → product → adaptation → testing.
+**Nuru** is a daily logic puzzle. A glyph is hidden on an 8×8 grid; you light the
+right cells to uncover it. Every board is solvable by pure deduction, so you
+never have to guess. ("Nuru" is Swahili for *light*.)
 
-## Status
+## How to play
 
-**Phase 1 — logic core (CLI only, no pixels): built, six of seven gate criteria
-pass.** `core/`, `solver/`, `gen/` (minus layout), the CLI, and the append-only
-test vectors are complete. The 1,000-puzzle batch gate is green (100%
-uniqueness + deducibility, 0 R5, ≥5% acceptance per band, wire byte-identical,
-p95 ≤1ms). See [`docs/PHASE1-BATCH.md`](docs/PHASE1-BATCH.md). The one open gate
-item is the owner's 30-puzzle blind-solve human-anchoring (Spearman ≥0.7,
-SPEC-GENERATOR §4.2) — it needs a human solving by hand.
+- **Edge numbers** count the lit cells in that row or column (like picross).
+- **`=`** joins two cells that share a state: both lit, or both dark.
+- **`≠`** joins two cells that differ: one lit, one dark.
+- Tap a cell to cycle **unknown → lit → dark**. Solve the grid and the glyph appears.
 
-## Layout
+The `=` / `≠` links are what make it more than picross. They let the generator
+build a unique, no-guess puzzle for any glyph without pre-revealing a single
+cell, so the reveal is always a surprise.
+
+## Under the hood
+
+Nuru runs on a small deduction engine (`src/core`, `src/solver`, `src/gen`): a
+propositional constraint solver that guarantees every generated board has a
+single solution reachable by logic alone. The grid, the picture, the difficulty
+rating, and the hint system are all the same constraint graph. The engine has
+zero DOM dependencies; the browser game imports it, never the reverse.
 
 ```
-src/core/     graph model, constraint registry, fmb1_ wire format, canonical
-              hash, §1.3 well-formedness validator
-src/solver/   deduction-only solver (R0–R4.1), canonical trace, certificate
-src/gen/      generator pipeline, DPLL uniqueness, grading  (layout: Phase 2)
-src/web/      browser "knot inspector" — a Phase 1 review harness that runs the
-              pure engine in the browser (NOT the Phase 2 tactile prototype;
-              the engine stays DOM-free, web imports it and never the reverse)
-src/sim/ render/ input/ game/ adapt/   Phase 2+ (not created yet)
-cli/          fumbo gen | grade | verify | trace | batch | bench | vectors
-test/vectors/ canonical, append-only cross-implementation vectors
-              (wire | solve | grade | digest)
+src/core/     constraint model, registry, wire format, canonical hash
+src/solver/   deduction-only solver + certificate
+src/gen/      glyph library, seeded generator, difficulty grading
+src/web/      the game (renderer, input, share card)
+cli/          gen | grade | verify | trace | batch  (engine dev tools)
 ```
 
-The `src/web/` inspector is extra to the "CLI-only, no pixels" Phase 1 charter —
-built to see and test the engine. It is boundary-safe (engine has zero DOM
-imports) and clearly labeled as a harness, not the tactile game.
-
-`core/` and `solver/` have zero imports from anywhere else; dependency
-direction is strictly downward through the list above.
-
-## Commands
+## Develop
 
 ```
 npm install
-npm test                       # unit + property tests
+npm run dev          # local dev server
+npm test             # unit + property tests
 npm run typecheck
-npm run fumbo -- gen --tier 2   # generate a puzzle
-npm run batch                   # Phase 1 gate: 1000-puzzle ladder run
+npm run build:web    # production build → dist/
 ```
 
-The name "Fumbo" is provisional (HANDOFF open question 1); code identifiers use
-the rename-safe `fmb` prefix.
+## License
+
+MIT. See [LICENSE](LICENSE).

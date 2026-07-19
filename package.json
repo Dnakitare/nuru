@@ -1,22 +1,23 @@
 {
-  "name": "fmb",
+  "name": "nuru",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
-  "description": "Fumbo (provisional) — tactile deduction game. Phase 1: logic core.",
+  "description": "Nuru — a daily glyph-deduction puzzle. Light the grid to reveal a hidden glyph; always solvable, never a guess.",
   "engines": {
     "node": ">=20"
   },
   "bin": {
-    "fumbo": "cli/index.ts"
+    "nuru": "cli/index.ts"
   },
   "scripts": {
-    "fumbo": "tsx cli/index.ts",
+    "nuru": "tsx cli/index.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.web.json",
     "dev": "vite",
     "build:web": "vite build",
+    "deploy": "vite build && touch dist/.nojekyll && npx --yes gh-pages@6 -d dist --dotfiles",
     "batch": "tsx cli/index.ts batch --n 1000 --ladder"
   },
   "devDependencies": {

@@ -11,7 +11,7 @@ const U = -1;
 const $ = (id: string) => document.getElementById(id)!;
 const OPTS: RevealOpts = { rows: 8, cols: 8 };
 const EPOCH = Date.UTC(2026, 0, 1);
-const STORE = "fmb_reveal_daily";
+const STORE = "nuru_daily";
 
 interface State {
   mode: "daily" | "practice";
@@ -129,17 +129,30 @@ function render(): void {
     }
   }
 
-  // relational link badges between adjacent cells
+  // relational link clues between adjacent cells: a connector bar (so it's
+  // obvious WHICH pair is bound) plus a badge stating the relation.
   for (const lk of board.links) {
     const ar = Math.floor(lk.a / board.cols);
     const ac = lk.a % board.cols;
     const br = Math.floor(lk.b / board.cols);
     const bc = lk.b % board.cols;
+    const horiz = ar === br;
+    const cx = (span(ac) + span(bc)) / 2 + CELL / 2;
+    const cy = (span(ar) + span(br)) / 2 + CELL / 2;
+    // bridge poking into both linked cells
+    const bar = document.createElement("div");
+    bar.className = "bridge" + (lk.eq ? " eq" : " xor");
+    const len = CELL + GAP;
+    bar.style.width = `${horiz ? len : 4}px`;
+    bar.style.height = `${horiz ? 4 : len}px`;
+    bar.style.left = `${cx}px`;
+    bar.style.top = `${cy}px`;
+    wrap.appendChild(bar);
     const b = document.createElement("div");
     b.className = "link" + (lk.eq ? " eq" : " xor");
-    b.style.left = `${(span(ac) + span(bc)) / 2 + CELL / 2}px`;
-    b.style.top = `${(span(ar) + span(br)) / 2 + CELL / 2}px`;
-    b.textContent = lk.eq ? "=" : "×";
+    b.style.left = `${cx}px`;
+    b.style.top = `${cy}px`;
+    b.textContent = lk.eq ? "=" : "≠";
     wrap.appendChild(b);
   }
 
@@ -202,8 +215,8 @@ async function doShare(): Promise<void> {
   const time = fmtTime(s.solveMs ?? 0);
   // daily is spoiler-free (no answer glyph); practice can show the glyph
   const blob = await renderShareCard({ showGlyph: s.mode === "practice", rows: s.board.rows, cols: s.board.cols, cells: s.board.sol, label, time });
-  const file = new File([blob], "fumbo.png", { type: "image/png" });
-  const text = `fumbo · ${label} · ${time} · no guesses ✦\n${location.origin}/`;
+  const file = new File([blob], "nuru.png", { type: "image/png" });
+  const text = `nuru · ${label} · ${time} · no guesses ✦\n${location.href}`;
   const btn = $("share");
   const flash = (msg: string) => {
     btn.textContent = msg;
@@ -211,7 +224,7 @@ async function doShare(): Promise<void> {
   };
   try {
     if (navigator.canShare?.({ files: [file] })) {
-      await navigator.share({ files: [file], text, title: "fumbo" });
+      await navigator.share({ files: [file], text, title: "nuru" });
       return;
     }
   } catch {
@@ -220,7 +233,7 @@ async function doShare(): Promise<void> {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `fumbo-${label.replace(/\W+/g, "-")}.png`;
+  a.download = `nuru-${label.replace(/\W+/g, "-")}.png`;
   a.click();
   URL.revokeObjectURL(url);
   navigator.clipboard?.writeText(text).catch(() => {});
@@ -262,8 +275,8 @@ if (typeof document !== "undefined") {
     if (e.target === intro) intro.classList.remove("show");
   });
   try {
-    if (!localStorage.getItem("fmb_reveal_onboarded")) {
-      localStorage.setItem("fmb_reveal_onboarded", "1");
+    if (!localStorage.getItem("nuru_onboarded")) {
+      localStorage.setItem("nuru_onboarded", "1");
       intro.classList.add("show");
     }
   } catch {
