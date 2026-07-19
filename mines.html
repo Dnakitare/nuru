@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>no-guess minesweeper · fumbo engine</title>
+    <style>
+      :root {
+        --bg: #f6f4ee; --panel: #fffdf8; --line: #e3ddd0; --ink: #2b2a26; --ink-dim: #7a756b;
+        --accent: #1f9e8a; --accent-soft: #d8efe9; --mine: #14b39a; --given: #ece7db; --bad: #d1584e;
+        --sans: ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif;
+        --mono: ui-monospace, "SF Mono", Menlo, monospace;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); }
+      .nav { display: flex; gap: 4px; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 13px; }
+      .nav a { color: var(--ink-dim); text-decoration: none; padding: 5px 10px; border-radius: 6px; }
+      .nav a.here { color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+      .nav a:hover { color: var(--ink); }
+      .wrap { max-width: 560px; margin: 0 auto; padding: 28px 20px 60px; text-align: center; }
+      h1 { font-size: 26px; margin: 6px 0 2px; letter-spacing: -0.01em; }
+      .tag { color: var(--ink-dim); font-size: 15px; margin: 0 0 22px; }
+      .tag b { color: var(--accent); }
+      .boardwrap { display: flex; justify-content: center; }
+      #board { position: relative; margin: 0 auto; }
+      .hex {
+        position: absolute; width: 48px; height: 54px; border: none; cursor: pointer;
+        background: var(--panel); border: 1.5px solid var(--line);
+        clip-path: polygon(50% 0, 100% 27%, 100% 73%, 50% 100%, 0 73%, 0 27%);
+        font-family: var(--mono); font-size: 18px; font-weight: 600; color: var(--ink);
+        transition: background 0.12s, transform 0.08s; padding: 0;
+      }
+      .hex.unknown:hover { transform: scale(1.06); background: #fff; }
+      .hex.unknown { background: var(--panel); }
+      .hex.clue { background: var(--given); color: var(--ink); cursor: default; }
+      .hex.mine { background: var(--mine); border-color: var(--mine); }
+      .hex.safe { background: var(--bg); border-style: dashed; }
+      .hex.strain { border-color: var(--bad); background: #f7dcd8; }
+      .now { min-height: 24px; margin: 22px 0 6px; font-size: 16px; font-family: var(--mono); color: var(--ink-dim); }
+      .now.win { color: var(--accent); font-weight: 600; }
+      .now.bad { color: var(--bad); }
+      .controls { display: flex; gap: 10px; justify-content: center; align-items: center; margin-top: 14px; }
+      button.act { font-family: var(--sans); font-size: 14px; padding: 9px 16px; border: 1px solid var(--line); background: var(--panel); border-radius: 8px; cursor: pointer; color: var(--ink); }
+      button.act:hover { border-color: var(--accent); color: var(--accent); }
+      .diff { font-family: var(--mono); font-size: 12px; color: var(--ink-dim); }
+      .how { margin-top: 26px; font-size: 13px; color: var(--ink-dim); line-height: 1.6; }
+      .how code { background: var(--given); padding: 1px 6px; border-radius: 4px; }
+      @media (prefers-color-scheme: dark) {
+        :root { --bg: #16171a; --panel: #202227; --line: #2e3138; --ink: #e6e3dc; --ink-dim: #9a958a; --given: #2a2d33; --accent-soft: #113a34; }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="/skins.html">← skins</a>
+      <a href="/mines.html" class="here">minesweeper</a>
+      <a href="/grid.html">grid</a>
+      <a href="/index.html">knot</a>
+    </nav>
+    <div class="wrap">
+      <h1>no-guess minesweeper</h1>
+      <p class="tag">numbers show how many of the <b>6 touching cells</b> are mines. every board is solvable by logic alone — <b>never a guess</b>.</p>
+      <div class="boardwrap"><div id="board"></div></div>
+      <div class="now" id="now">…</div>
+      <div class="controls">
+        <button class="act" id="new">new board</button>
+        <span class="diff" id="diff"></span>
+      </div>
+      <p class="how">tap a cell to cycle: <code>mine</code> → <code>clear</code> → unknown. mark every mine and clear the rest.</p>
+    </div>
+    <script type="module" src="/src/web/skins/minesweeper.ts"></script>
+  </body>
+</html>
