@@ -9,9 +9,23 @@
 
 import { CType, type Constraint, type DifficultyVector } from "../core/index.js";
 import { solve } from "../solver/index.js";
-import { GLYPHS } from "./glyphs.js";
+import { GLYPHS, REVEAL_TIERS } from "./glyphs.js";
 import { grade } from "./grade.js";
 import { Rng } from "./rng.js";
+
+export type RevealTier = "easy" | "medium" | "hard";
+
+/**
+ * The daily's difficulty by weekday (0=Sun..6=Sat): a gentle ramp so the ritual
+ * is predictable — easy early week, hardest on the weekend, like a crossword.
+ */
+export function dailyTier(weekday: number): RevealTier {
+  return (["medium", "easy", "easy", "medium", "medium", "hard", "hard"] as const)[weekday % 7]!;
+}
+
+export function tierPool(tier: RevealTier): number[] {
+  return tier === "hard" ? REVEAL_TIERS.hard : tier === "medium" ? REVEAL_TIERS.medium : REVEAL_TIERS.easy;
+}
 
 export interface RevealLink {
   a: number;
@@ -54,9 +68,9 @@ function greedyReveal(threadCount: number, rules: Constraint[], bundles: Constra
 
 type BundleMeta = { kind: "link"; link: RevealLink } | { kind: "given"; given: { cell: number; v: 0 | 1 } };
 
-export function genReveal(seed: number, _opts: RevealOpts): RevealBoard {
+export function genReveal(seed: number, _opts: RevealOpts, pool?: number[]): RevealBoard {
   const rng = new Rng(seed);
-  const glyph = GLYPHS[rng.int(GLYPHS.length)]!;
+  const glyph = pool && pool.length ? GLYPHS[pool[rng.int(pool.length)]!]! : GLYPHS[rng.int(GLYPHS.length)]!;
   const { rows, cols, cells: sol, name } = glyph;
   const n = rows * cols;
 

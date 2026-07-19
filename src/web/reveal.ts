@@ -4,7 +4,8 @@
 
 import { type Constraint } from "../core/index.js";
 import { firstViolated } from "../solver/index.js";
-import { genReveal, revealDailySeed, type RevealBoard, type RevealOpts } from "../gen/index.js";
+import { dailyTier, genReveal, revealDailySeed, tierPool, type RevealBoard, type RevealOpts, type RevealTier } from "../gen/index.js";
+import { renderShareCard } from "./sharecard.js";
 
 const U = -1;
 const $ = (id: string) => document.getElementById(id)!;
@@ -21,18 +22,20 @@ interface State {
   dayNo: number;
 }
 let st: State | null = null;
+let practiceTier: RevealTier = "medium";
 
-function today(): { seed: number; dayNo: number } {
+function today(): { seed: number; dayNo: number; weekday: number } {
   const d = new Date();
   const seed = revealDailySeed(d.getUTCFullYear(), d.getUTCMonth() + 1, d.getUTCDate());
   const dayNo = Math.floor((Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - EPOCH) / 86400000) + 1;
-  return { seed, dayNo };
+  return { seed, dayNo, weekday: d.getUTCDay() };
 }
 
 function newGame(mode: "daily" | "practice"): void {
   const t = today();
   const seed = mode === "daily" ? t.seed : (Math.floor(Math.random() * 0xffffffff) ^ 0x9e3779b9) >>> 0;
-  const board = genReveal(seed, OPTS);
+  const pool = tierPool(mode === "daily" ? dailyTier(t.weekday) : practiceTier);
+  const board = genReveal(seed, OPTS, pool);
   const committed = new Int8Array(board.rows * board.cols).fill(U);
   for (const g of board.givens) committed[g.cell] = g.v;
   st = { mode, board, committed, startMs: performance.now(), solveMs: null, dayNo: t.dayNo };
@@ -189,13 +192,39 @@ function finish(replay: boolean): void {
   $("wonText").textContent = `${replay ? "revealed earlier" : "revealed"} · ${label} · ${fmtTime(s.solveMs ?? 0)} · no guesses`;
   // the 8×8 board is tall — make sure the result card is actually visible
   requestAnimationFrame(() => $("won").scrollIntoView({ behavior: "smooth", block: "center" }));
-  ($("share") as HTMLButtonElement).onclick = () => {
-    const text = `fumbo · ${label} · ${s.board.name}\n${fmtTime(s.solveMs ?? 0)} · no guesses ✦\n${location.origin}/`;
-    navigator.clipboard?.writeText(text).then(() => {
-      $("share").textContent = "copied";
-      setTimeout(() => ($("share").textContent = "share"), 1400);
-    });
+  ($("share") as HTMLButtonElement).onclick = () => void doShare();
+}
+
+async function doShare(): Promise<void> {
+  const s = st;
+  if (!s) return;
+  const label = s.mode === "daily" ? `glyph #${s.dayNo}` : "practice";
+  const time = fmtTime(s.solveMs ?? 0);
+  // daily is spoiler-free (no answer glyph); practice can show the glyph
+  const blob = await renderShareCard({ showGlyph: s.mode === "practice", rows: s.board.rows, cols: s.board.cols, cells: s.board.sol, label, time });
+  const file = new File([blob], "fumbo.png", { type: "image/png" });
+  const text = `fumbo · ${label} · ${time} · no guesses ✦\n${location.origin}/`;
+  const btn = $("share");
+  const flash = (msg: string) => {
+    btn.textContent = msg;
+    setTimeout(() => (btn.textContent = "share"), 1600);
   };
+  try {
+    if (navigator.canShare?.({ files: [file] })) {
+      await navigator.share({ files: [file], text, title: "fumbo" });
+      return;
+    }
+  } catch {
+    /* user cancelled or share failed — fall through to download */
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `fumbo-${label.replace(/\W+/g, "-")}.png`;
+  a.click();
+  URL.revokeObjectURL(url);
+  navigator.clipboard?.writeText(text).catch(() => {});
+  flash("saved ✓");
 }
 
 function timer(): void {
@@ -204,23 +233,26 @@ function timer(): void {
   requestAnimationFrame(timer);
 }
 
+function setMode(mode: "daily" | "practice"): void {
+  document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("on", (x as HTMLElement).dataset.mode === mode));
+  $("ptiers").style.display = mode === "practice" ? "flex" : "none";
+  $("won").style.display = "none";
+  newGame(mode);
+}
+
 if (typeof document !== "undefined") {
-  document.querySelectorAll<HTMLElement>(".tab").forEach((t) =>
-    t.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach((x) => x.classList.remove("on"));
-      t.classList.add("on");
-      $("won").style.display = "none";
-      newGame(t.dataset.mode as "daily" | "practice");
+  document.querySelectorAll<HTMLElement>(".tab").forEach((t) => t.addEventListener("click", () => setMode(t.dataset.mode as "daily" | "practice")));
+  document.querySelectorAll<HTMLElement>(".ptier").forEach((p) =>
+    p.addEventListener("click", () => {
+      document.querySelectorAll(".ptier").forEach((x) => x.classList.remove("on"));
+      p.classList.add("on");
+      practiceTier = p.dataset.tier as RevealTier;
+      newGame("practice");
     }),
   );
   // "new glyph" always starts a fresh practice glyph — the daily is a single
   // deterministic board, so regenerating it would just re-show the solved state.
-  $("again").addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach((x) => x.classList.remove("on"));
-    document.querySelector('.tab[data-mode="practice"]')!.classList.add("on");
-    $("won").style.display = "none";
-    newGame("practice");
-  });
+  $("again").addEventListener("click", () => setMode("practice"));
   newGame("daily");
   requestAnimationFrame(timer);
 }

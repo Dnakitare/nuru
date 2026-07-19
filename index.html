@@ -25,6 +25,9 @@
       .tabs { display: inline-flex; background: var(--raised); border: 1px solid var(--line); border-radius: 10px; padding: 3px; gap: 2px; margin-bottom: 16px; }
       .tab { border: none; background: transparent; font-family: var(--sans); font-size: 14px; padding: 7px 18px; border-radius: 8px; cursor: pointer; color: var(--ink-dim); }
       .tab.on { background: #0d1219; color: var(--lit); font-weight: 600; }
+      .ptiers { display: flex; gap: 6px; justify-content: center; margin: 0 0 14px; }
+      .ptier { border: 1px solid var(--line); background: var(--raised); color: var(--ink-dim); font-family: var(--mono); font-size: 12px; padding: 5px 14px; border-radius: 7px; cursor: pointer; }
+      .ptier.on { border-color: var(--lit); color: var(--lit); }
 
       .timerbar { font-family: var(--mono); font-size: 20px; color: var(--ink-dim); margin-bottom: 14px; font-variant-numeric: tabular-nums; }
 
@@ -72,6 +75,11 @@
       <div class="tabs">
         <button class="tab on" data-mode="daily">daily</button>
         <button class="tab" data-mode="practice">practice</button>
+      </div>
+      <div class="ptiers" id="ptiers" style="display:none">
+        <button class="ptier" data-tier="easy">easy</button>
+        <button class="ptier on" data-tier="medium">medium</button>
+        <button class="ptier" data-tier="hard">hard</button>
       </div>
       <div class="timerbar" id="timer">0:00</div>
 

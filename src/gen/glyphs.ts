@@ -67,3 +67,21 @@ export const GLYPHS: Glyph[] = GLYPH_ART.map(({ name, art }) => {
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) cells[r * cols + c] = art[r]![c] === "#" ? 1 : 0;
   return { name, rows, cols, cells };
 });
+
+// Difficulty tiers, from measured solve effort (relational links needed): tier 0
+// glyphs solve from row/column counts alone (picross-easy); tier 1/2 need
+// increasing relational deduction. Used to keep the daily's difficulty
+// consistent (see the daily schedule) instead of swinging randomly.
+const MEDIUM = new Set(["heart", "spade", "letter z", "anchor", "ghost", "skull", "sun", "cat", "key", "moon", "house"]);
+const HARD = new Set(["eye", "letter k", "letter s", "letter a", "sparkle", "x", "bowtie", "ring"]);
+
+export function glyphTier(name: string): 0 | 1 | 2 {
+  return HARD.has(name) ? 2 : MEDIUM.has(name) ? 1 : 0;
+}
+
+/** Glyph indices grouped by difficulty tier. */
+export const REVEAL_TIERS: { easy: number[]; medium: number[]; hard: number[] } = { easy: [], medium: [], hard: [] };
+GLYPHS.forEach((g, i) => {
+  const t = glyphTier(g.name);
+  (t === 2 ? REVEAL_TIERS.hard : t === 1 ? REVEAL_TIERS.medium : REVEAL_TIERS.easy).push(i);
+});
