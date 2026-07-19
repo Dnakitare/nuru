@@ -8,6 +8,17 @@
     <link rel="apple-touch-icon" href="./logo-mark.svg" />
     <meta name="theme-color" content="#0a0e14" />
     <meta name="description" content="A daily logic puzzle: light the right cells to reveal a hidden glyph. Always solvable, never a guess." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="nuru · reveal the hidden glyph" />
+    <meta property="og:description" content="A daily logic puzzle: light the right cells to reveal a hidden glyph. Always solvable, never a guess." />
+    <meta property="og:url" content="https://dnakitare.github.io/nuru/" />
+    <meta property="og:image" content="https://dnakitare.github.io/nuru/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="nuru · reveal the hidden glyph" />
+    <meta name="twitter:description" content="A daily logic puzzle: light the right cells to reveal a hidden glyph. Always solvable, never a guess." />
+    <meta name="twitter:image" content="https://dnakitare.github.io/nuru/og.png" />
     <style>
       :root {
         --field: #0a0e14; --raised: #10161f; --line: #1e2733; --ink: #cfd8e2; --ink-dim: #6b7787; --ink-faint: #3a4553;
@@ -65,7 +76,8 @@
       .now.bad { color: var(--bad); }
       .won { display: none; margin-top: 14px; }
       .won .name { font-size: 22px; font-weight: 700; color: var(--ink); text-transform: lowercase; letter-spacing: 0.02em; margin-bottom: 2px; }
-      .won .txt { font-family: var(--mono); font-size: 13px; color: var(--lit); margin-bottom: 12px; letter-spacing: 0.04em; }
+      .won .txt { font-family: var(--mono); font-size: 13px; color: var(--lit); margin-bottom: 8px; letter-spacing: 0.04em; }
+      .won .streak { font-family: var(--mono); font-size: 14px; color: var(--edge); margin-bottom: 12px; letter-spacing: 0.03em; }
       .won .row { display: flex; gap: 10px; justify-content: center; }
       .won button { font-family: var(--sans); font-size: 14px; padding: 9px 18px; border-radius: 9px; cursor: pointer; border: 1px solid var(--line); background: var(--raised); color: var(--ink); }
       .won button.primary { background: var(--lit); border-color: var(--lit); color: #06120e; font-weight: 600; }
@@ -91,7 +103,7 @@
 
       @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
     </style>
-    <script type="module" crossorigin src="/nuru/assets/index-hPhIbo5w.js"></script>
+    <script type="module" crossorigin src="/nuru/assets/index-CncGRGQ6.js"></script>
   </head>
   <body>
     <div class="wrap">
@@ -116,6 +128,7 @@
       <div class="won" id="won">
         <div class="name" id="wonName"></div>
         <div class="txt" id="wonText"></div>
+        <div class="streak" id="wonStreak" style="display:none"></div>
         <div class="row"><button class="primary" id="share">share</button><button id="again">new glyph</button></div>
       </div>
       <p class="how">tap a cell to cycle <b>lit</b> → <b>dark</b> → unknown. a <span class="eq">=</span> link means two joined cells share a state; <span class="xor">≠</span> means they differ.</p>
